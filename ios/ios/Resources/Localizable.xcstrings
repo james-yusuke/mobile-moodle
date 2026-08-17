@@ -1,178 +1,2762 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "account" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Account"}},"ja":{"stringUnit":{"state":"translated","value":"アカウント"}}}},
-    "account.menu" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Account menu"}},"ja":{"stringUnit":{"state":"translated","value":"アカウントメニュー"}}}},
-    "account.remove" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Remove account"}},"ja":{"stringUnit":{"state":"translated","value":"アカウントを削除"}}}},
-    "account.remove.confirm" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Remove this account and its cached data from this device?"}},"ja":{"stringUnit":{"state":"translated","value":"このアカウントと端末内のキャッシュを削除しますか？"}}}},
-    "accounts.add" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Add Moodle site"}},"ja":{"stringUnit":{"state":"translated","value":"Moodleサイトを追加"}}}},
-    "accounts.switch" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Switch account"}},"ja":{"stringUnit":{"state":"translated","value":"アカウントを切替"}}}},
-    "accounts.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Your Moodle sites"}},"ja":{"stringUnit":{"state":"translated","value":"Moodleサイト"}}}},
-    "action.cancel" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Cancel"}},"ja":{"stringUnit":{"state":"translated","value":"キャンセル"}}}},
-    "action.change_site" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Change site"}},"ja":{"stringUnit":{"state":"translated","value":"サイトを変更"}}}},
-    "action.clear" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Clear"}},"ja":{"stringUnit":{"state":"translated","value":"クリア"}}}},
-    "action.dismiss" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Dismiss"}},"ja":{"stringUnit":{"state":"translated","value":"閉じる"}}}},
-    "action.done" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Done"}},"ja":{"stringUnit":{"state":"translated","value":"完了"}}}},
-    "action.open_moodle" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Open in Moodle"}},"ja":{"stringUnit":{"state":"translated","value":"Moodleで開く"}}}},
-    "action.retry" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Retry"}},"ja":{"stringUnit":{"state":"translated","value":"再送"}}}},
-    "action.view_all" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"View all"}},"ja":{"stringUnit":{"state":"translated","value":"すべて表示"}}}},
-    "app.name" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Mobile Moodle"}},"ja":{"stringUnit":{"state":"translated","value":"Mobile Moodle"}}}},
-    "assignment" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Assignment"}},"ja":{"stringUnit":{"state":"translated","value":"課題"}}}},
-    "assignment.choose_file" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Choose a file"}},"ja":{"stringUnit":{"state":"translated","value":"ファイルを選択"}}}},
-    "assignment.online_text" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Online text"}},"ja":{"stringUnit":{"state":"translated","value":"オンラインテキスト"}}}},
-    "assignment.readonly.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"HTML session accounts can review assignment details but cannot submit from the app."}},"ja":{"stringUnit":{"state":"translated","value":"HTMLセッションでは課題内容を閲覧できますが、アプリから提出はできません。"}}}},
-    "assignment.readonly.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Read-only assignment"}},"ja":{"stringUnit":{"state":"translated","value":"閲覧専用の課題"}}}},
-    "assignment.sent_at" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Submitted"}},"ja":{"stringUnit":{"state":"translated","value":"提出日時"}}}},
-    "assignment.state" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"State"}},"ja":{"stringUnit":{"state":"translated","value":"状態"}}}},
-    "assignment.status" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Submission status"}},"ja":{"stringUnit":{"state":"translated","value":"提出状況"}}}},
-    "assignment.submission" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Your submission"}},"ja":{"stringUnit":{"state":"translated","value":"提出内容"}}}},
-    "assignment.submit" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Submit assignment"}},"ja":{"stringUnit":{"state":"translated","value":"課題を提出"}}}},
-    "assignment.submit.confirm" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Submit this work to Moodle now?"}},"ja":{"stringUnit":{"state":"translated","value":"この内容をMoodleへ提出しますか？"}}}},
-    "assignment.submitted" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Submission completed"}},"ja":{"stringUnit":{"state":"translated","value":"提出が完了しました"}}}},
-    "calendar.empty.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Upcoming Moodle events will appear here."}},"ja":{"stringUnit":{"state":"translated","value":"今後のMoodle予定がここに表示されます。"}}}},
-    "calendar.empty.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"No upcoming events"}},"ja":{"stringUnit":{"state":"translated","value":"今後の予定はありません"}}}},
-    "calendar.eyebrow" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Timeline"}},"ja":{"stringUnit":{"state":"translated","value":"タイムライン"}}}},
-    "calendar.subtitle" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Upcoming Moodle events in chronological order."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleの予定を日時順に確認できます。"}}}},
-    "calendar.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Schedule"}},"ja":{"stringUnit":{"state":"translated","value":"予定"}}}},
-    "calendar.upcoming" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Upcoming schedule"}},"ja":{"stringUnit":{"state":"translated","value":"今後の予定"}}}},
-    "content" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Content"}},"ja":{"stringUnit":{"state":"translated","value":"教材"}}}},
-    "conversation" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Conversation"}},"ja":{"stringUnit":{"state":"translated","value":"会話"}}}},
-    "conversation.group" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Group conversation"}},"ja":{"stringUnit":{"state":"translated","value":"グループ会話"}}}},
-    "course" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Course"}},"ja":{"stringUnit":{"state":"translated","value":"コース"}}}},
-    "course.empty.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Course sections will appear after a successful sync."}},"ja":{"stringUnit":{"state":"translated","value":"同期するとコースセクションが表示されます。"}}}},
-    "course.empty.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"No course content"}},"ja":{"stringUnit":{"state":"translated","value":"教材がありません"}}}},
-    "course.missing.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Refresh your courses and try again."}},"ja":{"stringUnit":{"state":"translated","value":"コースを更新してからもう一度お試しください。"}}}},
-    "course.missing.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Course unavailable"}},"ja":{"stringUnit":{"state":"translated","value":"コースを表示できません"}}}},
-    "course.section.empty" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"No activities in this section."}},"ja":{"stringUnit":{"state":"translated","value":"このセクションに教材はありません。"}}}},
-    "courses" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Courses"}},"ja":{"stringUnit":{"state":"translated","value":"コース"}}}},
-    "courses.empty.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Enrolled courses will appear after synchronization."}},"ja":{"stringUnit":{"state":"translated","value":"同期すると履修中のコースが表示されます。"}}}},
-    "courses.empty.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"No courses yet"}},"ja":{"stringUnit":{"state":"translated","value":"コースがありません"}}}},
-    "courses.eyebrow" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Learning space"}},"ja":{"stringUnit":{"state":"translated","value":"ラーニングスペース"}}}},
-    "courses.search" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Search courses"}},"ja":{"stringUnit":{"state":"translated","value":"コースを検索"}}}},
-    "courses.search.empty" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"No courses match your search."}},"ja":{"stringUnit":{"state":"translated","value":"一致するコースはありません。"}}}},
-    "courses.subtitle" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Everything you are learning, in one place."}},"ja":{"stringUnit":{"state":"translated","value":"履修中の学びをひとつの場所で。"}}}},
-    "courses.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Your courses"}},"ja":{"stringUnit":{"state":"translated","value":"履修コース"}}}},
-    "error.account.missing" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"This Moodle account no longer exists."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleアカウントが見つかりません。"}}}},
-    "error.download" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"The file could not be downloaded."}},"ja":{"stringUnit":{"state":"translated","value":"ファイルをダウンロードできませんでした。"}}}},
-    "error.http" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Moodle returned an unexpected response."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleから予期しない応答が返されました。"}}}},
-    "error.login.credentials" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"The username or password was not accepted."}},"ja":{"stringUnit":{"state":"translated","value":"ユーザー名またはパスワードが正しくありません。"}}}},
-    "error.login.form" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"This Moodle login form is not supported."}},"ja":{"stringUnit":{"state":"translated","value":"このMoodleログインフォームには対応していません。"}}}},
-    "error.login.required" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Enter your username and password."}},"ja":{"stringUnit":{"state":"translated","value":"ユーザー名とパスワードを入力してください。"}}}},
-    "error.message.invalid" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Enter a message of 4,096 characters or fewer."}},"ja":{"stringUnit":{"state":"translated","value":"メッセージは4,096文字以内で入力してください。"}}}},
-    "error.message.refresh" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"The message was sent. Refresh conversations to continue."}},"ja":{"stringUnit":{"state":"translated","value":"送信は完了しました。会話一覧を更新してください。"}}}},
-    "error.moodle" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Moodle could not complete the request."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleで処理を完了できませんでした。"}}}},
-    "error.network" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Could not connect to Moodle."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleへ接続できませんでした。"}}}},
-    "error.offline" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Connect to Moodle to perform this action."}},"ja":{"stringUnit":{"state":"translated","value":"この操作にはMoodleへの接続が必要です。"}}}},
-    "error.public_config.empty" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Moodle returned an empty public configuration."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleの公開設定を取得できませんでした。"}}}},
-    "error.response.invalid" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Moodle returned invalid data."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleから不正なデータが返されました。"}}}},
-    "error.search.short" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Enter at least two characters."}},"ja":{"stringUnit":{"state":"translated","value":"2文字以上入力してください。"}}}},
-    "error.secure_storage" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Secure storage is unavailable."}},"ja":{"stringUnit":{"state":"translated","value":"安全な保存領域を利用できません。"}}}},
-    "error.session.context" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Moodle did not provide the required session information."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleから必要なセッション情報を取得できませんでした。"}}}},
-    "error.session.expired" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Your Moodle session expired. Sign in again to continue."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleセッションの期限が切れました。再ログインしてください。"}}}},
-    "error.sso.callback" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"The SSO callback was not recognized."}},"ja":{"stringUnit":{"state":"translated","value":"SSOコールバックを確認できませんでした。"}}}},
-    "error.sso.cancelled" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"SSO sign-in was cancelled."}},"ja":{"stringUnit":{"state":"translated","value":"SSOログインがキャンセルされました。"}}}},
-    "error.sso.expired" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"The SSO request expired."}},"ja":{"stringUnit":{"state":"translated","value":"SSOリクエストの有効期限が切れました。"}}}},
-    "error.sso.html" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"This SSO-only site cannot provide an HTML session without a web view. Open it in Safari instead."}},"ja":{"stringUnit":{"state":"translated","value":"SSO専用サイトのHTMLセッションはWebViewなしでは取得できません。Safariで利用してください。"}}}},
-    "error.sso.invalid" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"The SSO request could not be started."}},"ja":{"stringUnit":{"state":"translated","value":"SSOを開始できませんでした。"}}}},
-    "error.sso.missing" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"No matching SSO request is pending."}},"ja":{"stringUnit":{"state":"translated","value":"対応するSSOリクエストがありません。"}}}},
-    "error.sso.payload" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"The SSO response was invalid."}},"ja":{"stringUnit":{"state":"translated","value":"SSO応答が正しくありません。"}}}},
-    "error.sso.signature" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"The SSO response signature did not match."}},"ja":{"stringUnit":{"state":"translated","value":"SSO応答の署名が一致しません。"}}}},
-    "error.unsupported" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"This Moodle site does not support that feature."}},"ja":{"stringUnit":{"state":"translated","value":"このMoodleサイトでは利用できない機能です。"}}}},
-    "error.upload" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Moodle did not accept the selected file."}},"ja":{"stringUnit":{"state":"translated","value":"選択したファイルをMoodleへアップロードできませんでした。"}}}},
-    "error.url.cross_origin" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"The app blocked a link outside the connected Moodle site."}},"ja":{"stringUnit":{"state":"translated","value":"接続中のMoodle外への通信を拒否しました。"}}}},
-    "error.url.https" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Enter a valid HTTPS Moodle URL without embedded credentials."}},"ja":{"stringUnit":{"state":"translated","value":"認証情報を含まない有効なHTTPSのMoodle URLを入力してください。"}}}},
-    "error.url.invalid" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"The Moodle URL is invalid."}},"ja":{"stringUnit":{"state":"translated","value":"Moodle URLが正しくありません。"}}}},
-    "error.url.redirect" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"The Moodle canonical URL points outside the entered site."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleの正規URLが入力したサイト外を指しています。"}}}},
-    "error.url.required" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Enter a Moodle URL."}},"ja":{"stringUnit":{"state":"translated","value":"Moodle URLを入力してください。"}}}},
-    "event" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Event"}},"ja":{"stringUnit":{"state":"translated","value":"予定"}}}},
-    "file" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"File"}},"ja":{"stringUnit":{"state":"translated","value":"ファイル"}}}},
-    "files" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Files"}},"ja":{"stringUnit":{"state":"translated","value":"ファイル"}}}},
-    "grade" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Grade"}},"ja":{"stringUnit":{"state":"translated","value":"成績"}}}},
-    "grades" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Recent grades"}},"ja":{"stringUnit":{"state":"translated","value":"最近の成績"}}}},
-    "grades.empty.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Published grades will appear here."}},"ja":{"stringUnit":{"state":"translated","value":"公開された成績がここに表示されます。"}}}},
-    "grades.empty.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"No grades yet"}},"ja":{"stringUnit":{"state":"translated","value":"成績はまだありません"}}}},
-    "home.clear.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"There are no immediate Moodle deadlines."}},"ja":{"stringUnit":{"state":"translated","value":"直近のMoodle締切はありません。"}}}},
-    "home.clear.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"You are all caught up"}},"ja":{"stringUnit":{"state":"translated","value":"直近の予定はありません"}}}},
-    "home.courses" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Courses"}},"ja":{"stringUnit":{"state":"translated","value":"コース"}}}},
-    "home.events" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Upcoming"}},"ja":{"stringUnit":{"state":"translated","value":"今後の予定"}}}},
-    "home.greeting.afternoon" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Good afternoon"}},"ja":{"stringUnit":{"state":"translated","value":"こんにちは"}}}},
-    "home.greeting.evening" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Good evening"}},"ja":{"stringUnit":{"state":"translated","value":"こんばんは"}}}},
-    "home.greeting.morning" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Good morning"}},"ja":{"stringUnit":{"state":"translated","value":"おはようございます"}}}},
-    "home.next" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Next up"}},"ja":{"stringUnit":{"state":"translated","value":"次にやること"}}}},
-    "home.unread" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Unread"}},"ja":{"stringUnit":{"state":"translated","value":"未読"}}}},
-    "home.welcome" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Welcome back"}},"ja":{"stringUnit":{"state":"translated","value":"おかえりなさい"}}}},
-    "login.action" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Sign in"}},"ja":{"stringUnit":{"state":"translated","value":"ログイン"}}}},
-    "login.again" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Sign in again"}},"ja":{"stringUnit":{"state":"translated","value":"再ログイン"}}}},
-    "login.password" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Password"}},"ja":{"stringUnit":{"state":"translated","value":"パスワード"}}}},
-    "login.sso" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Continue with SSO"}},"ja":{"stringUnit":{"state":"translated","value":"SSOで続ける"}}}},
-    "login.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Sign in securely"}},"ja":{"stringUnit":{"state":"translated","value":"安全にログイン"}}}},
-    "login.username" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Username"}},"ja":{"stringUnit":{"state":"translated","value":"ユーザー名"}}}},
-    "messages" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Messages"}},"ja":{"stringUnit":{"state":"translated","value":"メッセージ"}}}},
-    "messages.empty.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Your Moodle conversations will appear here."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleの会話がここに表示されます。"}}}},
-    "messages.empty.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"No conversations"}},"ja":{"stringUnit":{"state":"translated","value":"会話はありません"}}}},
-    "messages.eyebrow" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Inbox"}},"ja":{"stringUnit":{"state":"translated","value":"受信トレイ"}}}},
-    "messages.find.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Enter at least two characters to find a Moodle user."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleユーザーを探すには2文字以上入力してください。"}}}},
-    "messages.find.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Find someone"}},"ja":{"stringUnit":{"state":"translated","value":"ユーザーを検索"}}}},
-    "messages.load_older" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Load older messages"}},"ja":{"stringUnit":{"state":"translated","value":"過去のメッセージを読み込む"}}}},
-    "messages.new" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"New message"}},"ja":{"stringUnit":{"state":"translated","value":"新しいメッセージ"}}}},
-    "messages.no_preview" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"No message preview"}},"ja":{"stringUnit":{"state":"translated","value":"プレビューはありません"}}}},
-    "messages.offline" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Connect to Moodle to reply"}},"ja":{"stringUnit":{"state":"translated","value":"返信するにはMoodleへ接続してください"}}}},
-    "messages.reply" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Write a reply"}},"ja":{"stringUnit":{"state":"translated","value":"返信を入力"}}}},
-    "messages.search" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Search Moodle users"}},"ja":{"stringUnit":{"state":"translated","value":"Moodleユーザーを検索"}}}},
-    "messages.send" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Send message"}},"ja":{"stringUnit":{"state":"translated","value":"メッセージを送信"}}}},
-    "messages.subtitle" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Direct and group conversations from Moodle."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleの個人・グループメッセージです。"}}}},
-    "messages.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Messages"}},"ja":{"stringUnit":{"state":"translated","value":"メッセージ"}}}},
-    "messages.unavailable.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Messaging is not enabled for this Moodle account."}},"ja":{"stringUnit":{"state":"translated","value":"このMoodleアカウントではメッセージを利用できません。"}}}},
-    "messages.unavailable.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Messages unavailable"}},"ja":{"stringUnit":{"state":"translated","value":"メッセージを利用できません"}}}},
-    "mode.api" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Native API"}},"ja":{"stringUnit":{"state":"translated","value":"ネイティブAPI"}}}},
-    "mode.html" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Secure HTML session"}},"ja":{"stringUnit":{"state":"translated","value":"安全なHTMLセッション"}}}},
-    "module.assignment" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Assignment"}},"ja":{"stringUnit":{"state":"translated","value":"課題"}}}},
-    "module.folder" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Folder"}},"ja":{"stringUnit":{"state":"translated","value":"フォルダ"}}}},
-    "module.page" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Page"}},"ja":{"stringUnit":{"state":"translated","value":"ページ"}}}},
-    "module.resource" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"File"}},"ja":{"stringUnit":{"state":"translated","value":"ファイル"}}}},
-    "module.unsupported" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Open in Moodle"}},"ja":{"stringUnit":{"state":"translated","value":"Moodleで開く"}}}},
-    "module.url" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Link"}},"ja":{"stringUnit":{"state":"translated","value":"リンク"}}}},
-    "moodle.user" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Moodle user"}},"ja":{"stringUnit":{"state":"translated","value":"Moodleユーザー"}}}},
-    "notification" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Notification"}},"ja":{"stringUnit":{"state":"translated","value":"通知"}}}},
-    "notification.message.new" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"New Moodle message"}},"ja":{"stringUnit":{"state":"translated","value":"新しいMoodleメッセージがあります"}}}},
-    "notifications" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Notifications"}},"ja":{"stringUnit":{"state":"translated","value":"通知"}}}},
-    "notifications.empty.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Moodle updates will appear here."}},"ja":{"stringUnit":{"state":"translated","value":"Moodleの更新がここに表示されます。"}}}},
-    "notifications.empty.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"No notifications"}},"ja":{"stringUnit":{"state":"translated","value":"通知はありません"}}}},
-    "onboarding.anysite" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Any Moodle"}},"ja":{"stringUnit":{"state":"translated","value":"汎用Moodle"}}}},
-    "onboarding.connect" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Connect a Moodle site"}},"ja":{"stringUnit":{"state":"translated","value":"Moodleサイトへ接続"}}}},
-    "onboarding.native" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Native UI"}},"ja":{"stringUnit":{"state":"translated","value":"ネイティブUI"}}}},
-    "onboarding.offline" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Offline cache"}},"ja":{"stringUnit":{"state":"translated","value":"オフライン閲覧"}}}},
-    "onboarding.secure.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Connects directly to Moodle over HTTPS. Your password is never stored."}},"ja":{"stringUnit":{"state":"translated","value":"HTTPSでMoodleへ直接接続します。パスワードは保存しません。"}}}},
-    "onboarding.secure.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Secure direct connection"}},"ja":{"stringUnit":{"state":"translated","value":"安全な直接接続"}}}},
-    "onboarding.tagline" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"A focused, native home for your learning."}},"ja":{"stringUnit":{"state":"translated","value":"学びに集中できる、ネイティブな大学ポータル。"}}}},
-    "section.default" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Section %lld"}},"ja":{"stringUnit":{"state":"translated","value":"セクション %lld"}}}},
-    "settings" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Settings"}},"ja":{"stringUnit":{"state":"translated","value":"設定"}}}},
-    "settings.account" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Account"}},"ja":{"stringUnit":{"state":"translated","value":"アカウント"}}}},
-    "settings.connection" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Connection"}},"ja":{"stringUnit":{"state":"translated","value":"接続方式"}}}},
-    "settings.notifications" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Notifications"}},"ja":{"stringUnit":{"state":"translated","value":"通知"}}}},
-    "settings.preview" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Show message previews"}},"ja":{"stringUnit":{"state":"translated","value":"メッセージ本文を通知に表示"}}}},
-    "settings.preview.body" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Previews may reveal private content on the lock screen."}},"ja":{"stringUnit":{"state":"translated","value":"ロック画面に個人的な内容が表示される場合があります。"}}}},
-    "settings.security" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Security"}},"ja":{"stringUnit":{"state":"translated","value":"セキュリティ"}}}},
-    "settings.security.direct" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"No intermediary server"}},"ja":{"stringUnit":{"state":"translated","value":"中継サーバー不使用"}}}},
-    "settings.security.https" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"HTTPS only"}},"ja":{"stringUnit":{"state":"translated","value":"HTTPSのみ"}}}},
-    "settings.security.password" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Passwords are never stored"}},"ja":{"stringUnit":{"state":"translated","value":"パスワードを保存しません"}}}},
-    "settings.version" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Moodle version"}},"ja":{"stringUnit":{"state":"translated","value":"Moodleバージョン"}}}},
-    "setup.continue" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Continue"}},"ja":{"stringUnit":{"state":"translated","value":"続ける"}}}},
-    "setup.description" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Enter your Moodle home or login URL. Subdirectory installations are supported."}},"ja":{"stringUnit":{"state":"translated","value":"MoodleのホームまたはログインURLを入力してください。サブディレクトリ型にも対応します。"}}}},
-    "setup.navigation" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Add site"}},"ja":{"stringUnit":{"state":"translated","value":"サイトを追加"}}}},
-    "setup.subtitle" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Connect directly to any compatible Moodle."}},"ja":{"stringUnit":{"state":"translated","value":"任意の対応Moodleへ直接接続します。"}}}},
-    "setup.title" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Connect your Moodle"}},"ja":{"stringUnit":{"state":"translated","value":"Moodleへ接続"}}}},
-    "setup.url" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Moodle site URL"}},"ja":{"stringUnit":{"state":"translated","value":"MoodleサイトURL"}}}},
-    "setup.url.placeholder" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"https://moodle.example.edu"}},"ja":{"stringUnit":{"state":"translated","value":"https://moodle.example.edu"}}}},
-    "status.loading" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Loading Moodle content"}},"ja":{"stringUnit":{"state":"translated","value":"Moodleの内容を読み込み中"}}}},
-    "status.offline" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Offline · cached data"}},"ja":{"stringUnit":{"state":"translated","value":"オフライン · キャッシュ表示"}}}},
-    "status.read" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Read"}},"ja":{"stringUnit":{"state":"translated","value":"既読"}}}},
-    "status.unread" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Unread"}},"ja":{"stringUnit":{"state":"translated","value":"未読"}}}},
-    "submission.none" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Not submitted"}},"ja":{"stringUnit":{"state":"translated","value":"未提出"}}}},
-    "tab.calendar" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Schedule"}},"ja":{"stringUnit":{"state":"translated","value":"予定"}}}},
-    "tab.courses" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Courses"}},"ja":{"stringUnit":{"state":"translated","value":"コース"}}}},
-    "tab.home" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Home"}},"ja":{"stringUnit":{"state":"translated","value":"ホーム"}}}},
-    "tab.messages" : {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Messages"}},"ja":{"stringUnit":{"state":"translated","value":"メッセージ"}}}}
+    "·" : {
+      "comment" : "A period.",
+      "isCommentAutoGenerated" : true
+    },
+    "account" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウント"
+          }
+        }
+      }
+    },
+    "account.menu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account menu"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウントメニュー"
+          }
+        }
+      }
+    },
+    "account.remove" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove account"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウントを削除"
+          }
+        }
+      }
+    },
+    "account.remove.confirm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove this account and its cached data from this device?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアカウントと端末内のキャッシュを削除しますか？"
+          }
+        }
+      }
+    },
+    "accounts.add" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Moodle site"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleサイトを追加"
+          }
+        }
+      }
+    },
+    "accounts.switch" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch account"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウントを切替"
+          }
+        }
+      }
+    },
+    "accounts.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Moodle sites"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleサイト"
+          }
+        }
+      }
+    },
+    "action.cancel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        }
+      }
+    },
+    "action.change_site" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change site"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サイトを変更"
+          }
+        }
+      }
+    },
+    "action.clear" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クリア"
+          }
+        }
+      }
+    },
+    "action.dismiss" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dismiss"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        }
+      }
+    },
+    "action.done" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了"
+          }
+        }
+      }
+    },
+    "action.open_moodle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in Moodle"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleで開く"
+          }
+        }
+      }
+    },
+    "action.retry" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再送"
+          }
+        }
+      }
+    },
+    "action.view_all" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View all"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべて表示"
+          }
+        }
+      }
+    },
+    "app.name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobile Moodle"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobile Moodle"
+          }
+        }
+      }
+    },
+    "assignment" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assignment"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "課題"
+          }
+        }
+      }
+    },
+    "assignment.choose_file" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a file"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ファイルを選択"
+          }
+        }
+      }
+    },
+    "assignment.online_text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Online text"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オンラインテキスト"
+          }
+        }
+      }
+    },
+    "assignment.readonly.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTML session accounts can review assignment details but cannot submit from the app."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTMLセッションでは課題内容を閲覧できますが、アプリから提出はできません。"
+          }
+        }
+      }
+    },
+    "assignment.readonly.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read-only assignment"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閲覧専用の課題"
+          }
+        }
+      }
+    },
+    "assignment.sent_at" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submitted"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提出日時"
+          }
+        }
+      }
+    },
+    "assignment.state" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "State"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "状態"
+          }
+        }
+      }
+    },
+    "assignment.status" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submission status"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提出状況"
+          }
+        }
+      }
+    },
+    "assignment.submission" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your submission"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提出内容"
+          }
+        }
+      }
+    },
+    "assignment.submit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submit assignment"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "課題を提出"
+          }
+        }
+      }
+    },
+    "assignment.submit.confirm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submit this work to Moodle now?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この内容をMoodleへ提出しますか？"
+          }
+        }
+      }
+    },
+    "assignment.submitted" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submission completed"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提出が完了しました"
+          }
+        }
+      }
+    },
+    "calendar.empty.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upcoming Moodle events will appear here."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今後のMoodle予定がここに表示されます。"
+          }
+        }
+      }
+    },
+    "calendar.empty.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No upcoming events"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今後の予定はありません"
+          }
+        }
+      }
+    },
+    "calendar.eyebrow" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timeline"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タイムライン"
+          }
+        }
+      }
+    },
+    "calendar.subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upcoming Moodle events in chronological order."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleの予定を日時順に確認できます。"
+          }
+        }
+      }
+    },
+    "calendar.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schedule"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "予定"
+          }
+        }
+      }
+    },
+    "calendar.upcoming" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upcoming schedule"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今後の予定"
+          }
+        }
+      }
+    },
+    "content" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Content"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "教材"
+          }
+        }
+      }
+    },
+    "conversation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conversation"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "会話"
+          }
+        }
+      }
+    },
+    "conversation.group" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group conversation"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グループ会話"
+          }
+        }
+      }
+    },
+    "course" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Course"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コース"
+          }
+        }
+      }
+    },
+    "course.empty.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Course sections will appear after a successful sync."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同期するとコースセクションが表示されます。"
+          }
+        }
+      }
+    },
+    "course.empty.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No course content"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "教材がありません"
+          }
+        }
+      }
+    },
+    "course.missing.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh your courses and try again."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コースを更新してからもう一度お試しください。"
+          }
+        }
+      }
+    },
+    "course.missing.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Course unavailable"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コースを表示できません"
+          }
+        }
+      }
+    },
+    "course.section.empty" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No activities in this section."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このセクションに教材はありません。"
+          }
+        }
+      }
+    },
+    "courses" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Courses"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コース"
+          }
+        }
+      }
+    },
+    "courses.empty.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enrolled courses will appear after synchronization."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同期すると履修中のコースが表示されます。"
+          }
+        }
+      }
+    },
+    "courses.empty.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No courses yet"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コースがありません"
+          }
+        }
+      }
+    },
+    "courses.eyebrow" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Learning space"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ラーニングスペース"
+          }
+        }
+      }
+    },
+    "courses.search" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search courses"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コースを検索"
+          }
+        }
+      }
+    },
+    "courses.search.empty" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No courses match your search."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一致するコースはありません。"
+          }
+        }
+      }
+    },
+    "courses.subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Everything you are learning, in one place."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "履修中の学びをひとつの場所で。"
+          }
+        }
+      }
+    },
+    "courses.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your courses"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "履修コース"
+          }
+        }
+      }
+    },
+    "error.account.missing" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Moodle account no longer exists."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleアカウントが見つかりません。"
+          }
+        }
+      }
+    },
+    "error.download" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file could not be downloaded."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ファイルをダウンロードできませんでした。"
+          }
+        }
+      }
+    },
+    "error.http" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodle returned an unexpected response."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleから予期しない応答が返されました。"
+          }
+        }
+      }
+    },
+    "error.login.credentials" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The username or password was not accepted."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー名またはパスワードが正しくありません。"
+          }
+        }
+      }
+    },
+    "error.login.form" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Moodle login form is not supported."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このMoodleログインフォームには対応していません。"
+          }
+        }
+      }
+    },
+    "error.login.required" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter your username and password."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー名とパスワードを入力してください。"
+          }
+        }
+      }
+    },
+    "error.message.invalid" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a message of 4,096 characters or fewer."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージは4,096文字以内で入力してください。"
+          }
+        }
+      }
+    },
+    "error.message.refresh" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The message was sent. Refresh conversations to continue."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "送信は完了しました。会話一覧を更新してください。"
+          }
+        }
+      }
+    },
+    "error.moodle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodle could not complete the request."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleで処理を完了できませんでした。"
+          }
+        }
+      }
+    },
+    "error.network" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not connect to Moodle."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleへ接続できませんでした。"
+          }
+        }
+      }
+    },
+    "error.offline" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect to Moodle to perform this action."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この操作にはMoodleへの接続が必要です。"
+          }
+        }
+      }
+    },
+    "error.public_config.empty" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodle returned an empty public configuration."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleの公開設定を取得できませんでした。"
+          }
+        }
+      }
+    },
+    "error.response.invalid" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodle returned invalid data."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleから不正なデータが返されました。"
+          }
+        }
+      }
+    },
+    "error.search.short" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter at least two characters."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2文字以上入力してください。"
+          }
+        }
+      }
+    },
+    "error.secure_storage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secure storage is unavailable."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安全な保存領域を利用できません。"
+          }
+        }
+      }
+    },
+    "error.session.context" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodle did not provide the required session information."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleから必要なセッション情報を取得できませんでした。"
+          }
+        }
+      }
+    },
+    "error.session.expired" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Moodle session expired. Sign in again to continue."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleセッションの期限が切れました。再ログインしてください。"
+          }
+        }
+      }
+    },
+    "error.sso.callback" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The SSO callback was not recognized."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSOコールバックを確認できませんでした。"
+          }
+        }
+      }
+    },
+    "error.sso.cancelled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSO sign-in was cancelled."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSOログインがキャンセルされました。"
+          }
+        }
+      }
+    },
+    "error.sso.expired" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The SSO request expired."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSOリクエストの有効期限が切れました。"
+          }
+        }
+      }
+    },
+    "error.sso.html" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This SSO-only site cannot provide an HTML session without a web view. Open it in Safari instead."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSO専用サイトのHTMLセッションはWebViewなしでは取得できません。Safariで利用してください。"
+          }
+        }
+      }
+    },
+    "error.sso.invalid" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The SSO request could not be started."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSOを開始できませんでした。"
+          }
+        }
+      }
+    },
+    "error.sso.missing" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No matching SSO request is pending."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "対応するSSOリクエストがありません。"
+          }
+        }
+      }
+    },
+    "error.sso.payload" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The SSO response was invalid."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSO応答が正しくありません。"
+          }
+        }
+      }
+    },
+    "error.sso.signature" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The SSO response signature did not match."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSO応答の署名が一致しません。"
+          }
+        }
+      }
+    },
+    "error.unsupported" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Moodle site does not support that feature."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このMoodleサイトでは利用できない機能です。"
+          }
+        }
+      }
+    },
+    "error.upload" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodle did not accept the selected file."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択したファイルをMoodleへアップロードできませんでした。"
+          }
+        }
+      }
+    },
+    "error.url.cross_origin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The app blocked a link outside the connected Moodle site."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接続中のMoodle外への通信を拒否しました。"
+          }
+        }
+      }
+    },
+    "error.url.https" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a valid HTTPS Moodle URL without embedded credentials."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "認証情報を含まない有効なHTTPSのMoodle URLを入力してください。"
+          }
+        }
+      }
+    },
+    "error.url.invalid" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Moodle URL is invalid."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodle URLが正しくありません。"
+          }
+        }
+      }
+    },
+    "error.url.redirect" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Moodle canonical URL points outside the entered site."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleの正規URLが入力したサイト外を指しています。"
+          }
+        }
+      }
+    },
+    "error.url.required" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a Moodle URL."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodle URLを入力してください。"
+          }
+        }
+      }
+    },
+    "event" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Event"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "予定"
+          }
+        }
+      }
+    },
+    "file" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ファイル"
+          }
+        }
+      }
+    },
+    "files" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Files"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ファイル"
+          }
+        }
+      }
+    },
+    "grade" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grade"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成績"
+          }
+        }
+      }
+    },
+    "grades" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recent grades"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近の成績"
+          }
+        }
+      }
+    },
+    "grades.empty.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Published grades will appear here."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公開された成績がここに表示されます。"
+          }
+        }
+      }
+    },
+    "grades.empty.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No grades yet"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成績はまだありません"
+          }
+        }
+      }
+    },
+    "home.clear.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There are no immediate Moodle deadlines."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "直近のMoodle締切はありません。"
+          }
+        }
+      }
+    },
+    "home.clear.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are all caught up"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "直近の予定はありません"
+          }
+        }
+      }
+    },
+    "home.courses" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Courses"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コース"
+          }
+        }
+      }
+    },
+    "home.events" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upcoming"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今後の予定"
+          }
+        }
+      }
+    },
+    "home.greeting.afternoon" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good afternoon"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "こんにちは"
+          }
+        }
+      }
+    },
+    "home.greeting.evening" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good evening"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "こんばんは"
+          }
+        }
+      }
+    },
+    "home.greeting.morning" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good morning"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "おはようございます"
+          }
+        }
+      }
+    },
+    "home.next" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next up"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次にやること"
+          }
+        }
+      }
+    },
+    "home.unread" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unread"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未読"
+          }
+        }
+      }
+    },
+    "home.welcome" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome back"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "おかえりなさい"
+          }
+        }
+      }
+    },
+    "login.action" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログイン"
+          }
+        }
+      }
+    },
+    "login.again" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in again"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再ログイン"
+          }
+        }
+      }
+    },
+    "login.password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パスワード"
+          }
+        }
+      }
+    },
+    "login.sso" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue with SSO"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSOで続ける"
+          }
+        }
+      }
+    },
+    "login.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in securely"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安全にログイン"
+          }
+        }
+      }
+    },
+    "login.username" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Username"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー名"
+          }
+        }
+      }
+    },
+    "messages" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Messages"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージ"
+          }
+        }
+      }
+    },
+    "messages.empty.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Moodle conversations will appear here."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleの会話がここに表示されます。"
+          }
+        }
+      }
+    },
+    "messages.empty.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No conversations"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "会話はありません"
+          }
+        }
+      }
+    },
+    "messages.eyebrow" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inbox"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受信トレイ"
+          }
+        }
+      }
+    },
+    "messages.find.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter at least two characters to find a Moodle user."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleユーザーを探すには2文字以上入力してください。"
+          }
+        }
+      }
+    },
+    "messages.find.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find someone"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザーを検索"
+          }
+        }
+      }
+    },
+    "messages.load_older" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Load older messages"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "過去のメッセージを読み込む"
+          }
+        }
+      }
+    },
+    "messages.new" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New message"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しいメッセージ"
+          }
+        }
+      }
+    },
+    "messages.no_preview" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No message preview"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プレビューはありません"
+          }
+        }
+      }
+    },
+    "messages.offline" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect to Moodle to reply"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "返信するにはMoodleへ接続してください"
+          }
+        }
+      }
+    },
+    "messages.reply" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a reply"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "返信を入力"
+          }
+        }
+      }
+    },
+    "messages.search" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search Moodle users"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleユーザーを検索"
+          }
+        }
+      }
+    },
+    "messages.send" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send message"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージを送信"
+          }
+        }
+      }
+    },
+    "messages.subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Direct and group conversations from Moodle."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleの個人・グループメッセージです。"
+          }
+        }
+      }
+    },
+    "messages.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Messages"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージ"
+          }
+        }
+      }
+    },
+    "messages.unavailable.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Messaging is not enabled for this Moodle account."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このMoodleアカウントではメッセージを利用できません。"
+          }
+        }
+      }
+    },
+    "messages.unavailable.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Messages unavailable"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージを利用できません"
+          }
+        }
+      }
+    },
+    "mode.api" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Native API"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ネイティブAPI"
+          }
+        }
+      }
+    },
+    "mode.html" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secure HTML session"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安全なHTMLセッション"
+          }
+        }
+      }
+    },
+    "module.assignment" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assignment"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "課題"
+          }
+        }
+      }
+    },
+    "module.folder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folder"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フォルダ"
+          }
+        }
+      }
+    },
+    "module.page" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Page"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ページ"
+          }
+        }
+      }
+    },
+    "module.resource" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ファイル"
+          }
+        }
+      }
+    },
+    "module.unsupported" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in Moodle"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleで開く"
+          }
+        }
+      }
+    },
+    "module.url" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンク"
+          }
+        }
+      }
+    },
+    "moodle.user" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodle user"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleユーザー"
+          }
+        }
+      }
+    },
+    "notification" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notification"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知"
+          }
+        }
+      }
+    },
+    "notification.message.new" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Moodle message"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しいMoodleメッセージがあります"
+          }
+        }
+      }
+    },
+    "notifications" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知"
+          }
+        }
+      }
+    },
+    "notifications.empty.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodle updates will appear here."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleの更新がここに表示されます。"
+          }
+        }
+      }
+    },
+    "notifications.empty.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No notifications"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知はありません"
+          }
+        }
+      }
+    },
+    "onboarding.anysite" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Any Moodle"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "汎用Moodle"
+          }
+        }
+      }
+    },
+    "onboarding.connect" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect a Moodle site"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleサイトへ接続"
+          }
+        }
+      }
+    },
+    "onboarding.native" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Native UI"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ネイティブUI"
+          }
+        }
+      }
+    },
+    "onboarding.offline" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offline cache"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オフライン閲覧"
+          }
+        }
+      }
+    },
+    "onboarding.secure.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connects directly to Moodle over HTTPS. Your password is never stored."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTTPSでMoodleへ直接接続します。パスワードは保存しません。"
+          }
+        }
+      }
+    },
+    "onboarding.secure.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secure direct connection"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安全な直接接続"
+          }
+        }
+      }
+    },
+    "onboarding.tagline" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A focused, native home for your learning."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "学びに集中できる、ネイティブな大学ポータル。"
+          }
+        }
+      }
+    },
+    "section.default" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Section %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セクション %lld"
+          }
+        }
+      }
+    },
+    "settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定"
+          }
+        }
+      }
+    },
+    "settings.account" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウント"
+          }
+        }
+      }
+    },
+    "settings.connection" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接続方式"
+          }
+        }
+      }
+    },
+    "settings.notifications" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知"
+          }
+        }
+      }
+    },
+    "settings.preview" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show message previews"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージ本文を通知に表示"
+          }
+        }
+      }
+    },
+    "settings.preview.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Previews may reveal private content on the lock screen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ロック画面に個人的な内容が表示される場合があります。"
+          }
+        }
+      }
+    },
+    "settings.security" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セキュリティ"
+          }
+        }
+      }
+    },
+    "settings.security.direct" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No intermediary server"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "中継サーバー不使用"
+          }
+        }
+      }
+    },
+    "settings.security.https" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTTPS only"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTTPSのみ"
+          }
+        }
+      }
+    },
+    "settings.security.password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwords are never stored"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パスワードを保存しません"
+          }
+        }
+      }
+    },
+    "settings.version" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodle version"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleバージョン"
+          }
+        }
+      }
+    },
+    "setup.continue" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "続ける"
+          }
+        }
+      }
+    },
+    "setup.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter your Moodle home or login URL. Subdirectory installations are supported."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MoodleのホームまたはログインURLを入力してください。サブディレクトリ型にも対応します。"
+          }
+        }
+      }
+    },
+    "setup.navigation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add site"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サイトを追加"
+          }
+        }
+      }
+    },
+    "setup.subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect directly to any compatible Moodle."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "任意の対応Moodleへ直接接続します。"
+          }
+        }
+      }
+    },
+    "setup.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect your Moodle"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleへ接続"
+          }
+        }
+      }
+    },
+    "setup.url" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodle site URL"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MoodleサイトURL"
+          }
+        }
+      }
+    },
+    "setup.url.placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "https://moodle.example.edu"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "https://moodle.example.edu"
+          }
+        }
+      }
+    },
+    "status.loading" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading Moodle content"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moodleの内容を読み込み中"
+          }
+        }
+      }
+    },
+    "status.offline" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offline · cached data"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オフライン · キャッシュ表示"
+          }
+        }
+      }
+    },
+    "status.read" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "既読"
+          }
+        }
+      }
+    },
+    "status.unread" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unread"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未読"
+          }
+        }
+      }
+    },
+    "submission.none" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not submitted"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未提出"
+          }
+        }
+      }
+    },
+    "tab.calendar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schedule"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "予定"
+          }
+        }
+      }
+    },
+    "tab.courses" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Courses"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コース"
+          }
+        }
+      }
+    },
+    "tab.home" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ホーム"
+          }
+        }
+      }
+    },
+    "tab.messages" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Messages"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージ"
+          }
+        }
+      }
+    }
   },
-  "version" : "1.0"
+  "version" : "1.1"
 }
