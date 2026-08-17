@@ -159,15 +159,32 @@ struct PortalLoadingView: View {
 
 struct HTMLText: View {
     var html: String
+    var textColor: Color = .primary
+    var linkColor: Color = PortalTheme.teal
+
     var body: some View {
         if html.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { EmptyView() }
-        else { Text(attributed).font(.body).lineSpacing(4).textSelection(.enabled) }
+        else {
+            Text(attributed)
+                .font(.body)
+                .foregroundStyle(textColor)
+                .tint(linkColor)
+                .lineSpacing(4)
+                .textSelection(.enabled)
+        }
     }
 
     private var attributed: AttributedString {
         guard let data = html.data(using: .utf8),
               let value = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)
         else { return AttributedString(html) }
-        return AttributedString(value)
+        // Moodle HTML often carries a black foreground color and a browser font.
+        // Strip the UIKit/AppKit color before bridging to SwiftUI; removing the
+        // SwiftUI attribute afterwards does not clear the original HTML color.
+        let result = NSMutableAttributedString(attributedString: value)
+        let fullRange = NSRange(location: 0, length: result.length)
+        result.removeAttribute(.foregroundColor, range: fullRange)
+        result.removeAttribute(.font, range: fullRange)
+        return AttributedString(result)
     }
 }

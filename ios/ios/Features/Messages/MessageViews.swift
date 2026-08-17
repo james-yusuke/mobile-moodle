@@ -100,8 +100,11 @@ private struct MessageBubble: View {
             if message.isMine { Spacer(minLength: 54) }
             VStack(alignment: message.isMine ? .trailing : .leading, spacing: 4) {
                 if !message.isMine { Text(message.senderName).font(.caption.weight(.semibold)).foregroundStyle(.secondary) }
-                HTMLText(html: message.bodyHTML.isEmpty ? message.bodyText : message.bodyHTML)
-                    .foregroundStyle(message.isMine ? Color.white : Color.primary)
+                HTMLText(
+                    html: message.bodyHTML.isEmpty ? message.bodyText : message.bodyHTML,
+                    textColor: message.isMine ? .white : .primary,
+                    linkColor: message.isMine ? .white : PortalTheme.teal
+                )
                     .padding(.horizontal, 14).padding(.vertical, 10)
                     .background(message.isMine ? AnyShapeStyle(LinearGradient(colors: [PortalTheme.teal, PortalTheme.tealDark], startPoint: .topLeading, endPoint: .bottomTrailing)) : AnyShapeStyle(Color.secondary.opacity(0.1)), in: RoundedRectangle(cornerRadius: 19, style: .continuous))
                 Text(message.createdAt, format: .dateTime.hour().minute()).font(.caption2).foregroundStyle(.tertiary)
