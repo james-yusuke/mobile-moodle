@@ -1,0 +1,4 @@
+# Copy this file to local-test.properties. The copied file is ignored by Git.
+siteUrl=https://moodle.example.edu/login/index.php
+username=local-test-user
+password=local-test-password

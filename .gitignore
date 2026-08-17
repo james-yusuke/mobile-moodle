@@ -117,3 +117,14 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+# Mobile Moodle project files that must remain local.
+android/.idea/
+android/local-test.properties
+android/.gradle-user/
+
+# Keep the Android wrapper reproducible even though the inherited Flutter rules ignore it.
+!android/gradlew
+!android/gradlew.bat
+!android/gradle/wrapper/gradle-wrapper.jar
+!android/gradle/wrapper/gradle-wrapper.properties
