@@ -38,7 +38,11 @@ class LiveHtmlSmokeTest {
         }
         composeRule.onNodeWithText(composeRule.activity.getString(R.string.username)).performTextInput(username)
         composeRule.onNodeWithText(composeRule.activity.getString(R.string.password)).performTextInput(password)
-        composeRule.onNodeWithText(composeRule.activity.getString(R.string.sign_in)).performClick()
+        composeRule.onAllNodes(
+            hasText(composeRule.activity.getString(R.string.sign_in)) and hasClickAction(),
+        )
+            .onFirst()
+            .performClick()
 
         composeRule.waitUntil(timeoutMillis = 45_000) {
             composeRule.onAllNodesWithText(composeRule.activity.getString(R.string.welcome_back))

@@ -1,5 +1,6 @@
 package org.moodle
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -10,10 +11,15 @@ import org.moodle.core.model.ConnectionMode
 import org.moodle.core.model.ConversationType
 import org.moodle.core.model.MoodleConversation
 import org.moodle.core.model.MoodleConversationMember
+import org.moodle.core.model.MoodleMessage
 import org.moodle.core.model.SiteAccount
 import org.moodle.core.model.SiteCapabilities
 import org.moodle.ui.MessageListScreen
+import org.moodle.ui.MessageBubble
+import org.moodle.ui.MessageDateSeparator
 import org.moodle.ui.MoodleTheme
+import java.text.DateFormat
+import java.util.Date
 
 class MessageUiTest {
     @get:Rule
@@ -61,5 +67,36 @@ class MessageUiTest {
         composeRule.onNodeWithText("2").assertExists()
         val label = InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.new_message)
         composeRule.onNodeWithContentDescription(label).assertExists()
+    }
+
+    @Test
+    fun darkConversationRendersDateSeparatorAndReadableBubble() {
+        val createdAt = 1_700_000_000L
+        val message = MoodleMessage(
+            id = 1,
+            conversationId = 8,
+            senderId = 20,
+            senderName = "Ada Lovelace",
+            bodyText = "A carefully written long message for the course project.",
+            bodyHtml = "",
+            createdAt = createdAt,
+            isMine = false,
+            isRead = true,
+        )
+
+        composeRule.setContent {
+            MoodleTheme(darkTheme = true) {
+                Column {
+                    MessageDateSeparator(createdAt)
+                    MessageBubble(message)
+                }
+            }
+        }
+
+        composeRule.onNodeWithText("Ada Lovelace").assertExists()
+        composeRule.onNodeWithText(message.bodyText).assertExists()
+        composeRule.onNodeWithText(
+            DateFormat.getDateInstance(DateFormat.MEDIUM).format(Date(createdAt * 1_000L)),
+        ).assertExists()
     }
 }

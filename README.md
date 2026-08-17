@@ -47,3 +47,4 @@ MOODLE_TEST_PASSWORD='...' \
 - HTML 通信はアカウントごとに Cookie を分離し、入力した Moodle の HTTPS オリジンおよびサブディレクトリ外へのリダイレクトを拒否します。
 - アプリは WebView を使用しません。HTML は Jsoup でサニタイズしてからデータモデルへ変換し、Compose で描画します。
 - HTTP 本文、トークン、Cookie をログへ出力しません。
+- Gradle Wrapper のJARと配布ZIPは公式SHA-256へ固定し、GitHub ActionsでもWrapper検証を実行します。

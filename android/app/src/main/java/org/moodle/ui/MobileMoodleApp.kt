@@ -3,7 +3,13 @@ package org.moodle.ui
 import android.content.Intent
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -78,9 +84,28 @@ fun MobileMoodleApp(viewModel: AppViewModel) {
 
     MoodleTheme {
         Surface(Modifier.fillMaxSize()) {
-            Scaffold(snackbarHost = { SnackbarHost(snackbar) }) { outerPadding ->
+            Scaffold(
+                snackbarHost = { SnackbarHost(snackbar) },
+                contentWindowInsets = WindowInsets(0, 0, 0, 0),
+                containerColor = androidx.compose.ui.graphics.Color.Transparent,
+            ) { outerPadding ->
                 Box(Modifier.fillMaxSize().padding(outerPadding)) {
-                    NavHost(navController, startDestination = ROUTE_SITES) {
+                    NavHost(
+                        navController,
+                        startDestination = ROUTE_SITES,
+                        enterTransition = {
+                            fadeIn(tween(220)) + slideInHorizontally(tween(240)) { it / 12 }
+                        },
+                        exitTransition = {
+                            fadeOut(tween(150)) + slideOutHorizontally(tween(190)) { -it / 16 }
+                        },
+                        popEnterTransition = {
+                            fadeIn(tween(200)) + slideInHorizontally(tween(220)) { -it / 12 }
+                        },
+                        popExitTransition = {
+                            fadeOut(tween(140)) + slideOutHorizontally(tween(180)) { it / 16 }
+                        },
+                    ) {
                         composable(ROUTE_SITES) {
                             PortalAccountListScreen(
                                 accounts = accounts,

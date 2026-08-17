@@ -101,4 +101,42 @@
     <string name="secure_connection">安全な直接接続</string>
     <string name="secure_connection_body">HTTPSでMoodleへ直接接続します。パスワードは端末に保存しません。</string>
     <string name="connect_to_moodle">Moodleへ接続</string>
+    <string name="course_section_supporting">前回の続きから学習できます</string>
+    <string name="empty_grades">表示できる成績はまだありません。</string>
+    <string name="next_activity">次の予定</string>
+    <string name="nothing_due">いまは余裕があります</string>
+    <string name="nothing_due_supporting">新しい締切や予定はここに表示されます。</string>
+    <string name="course_label">コース</string>
+    <string name="learning_space">学習スペース</string>
+    <string name="courses_supporting">履修中のコースを検索して学習を続けられます。</string>
+    <string name="timeline">タイムライン</string>
+    <string name="calendar_supporting">Moodleの予定を日時順に確認できます。</string>
+    <string name="inbox">アクティビティ</string>
+    <string name="notifications_supporting">接続中のMoodleから届いた更新とお知らせです。</string>
+    <string name="account_and_privacy">アカウントとプライバシー</string>
+    <string name="conversations">会話</string>
+    <string name="messages_supporting">Moodleの個人・グループメッセージです。</string>
+    <string name="start_conversation">会話を始める</string>
+    <string name="find_someone">誰にメッセージを送りますか？</string>
+    <string name="find_someone_supporting">Moodleユーザーを検索して、個人メッセージを作成します。</string>
+    <string name="onboarding_eyebrow">学びを、ひとつにつなぐ</string>
+    <string name="setup_site">安全なセットアップ</string>
+    <string name="setup_supporting">任意の対応MoodleへHTTPSで直接接続します。</string>
+    <string name="step_site_address">1  サイトURL</string>
+    <string name="step_sign_in">2  ログイン</string>
+    <string name="no_sections">表示できるコースセクションがありません。</string>
+    <string name="downloads">ダウンロード</string>
+    <string name="prepare_submission">提出内容を準備</string>
+    <plurals name="course_count">
+        <item quantity="other">%1$dコース</item>
+    </plurals>
+    <plurals name="conversation_count">
+        <item quantity="other">%1$d件の会話</item>
+    </plurals>
+    <plurals name="connected_count">
+        <item quantity="other">接続済み %1$dサイト</item>
+    </plurals>
+    <plurals name="sections_count">
+        <item quantity="other">%1$dセクション</item>
+    </plurals>
 </resources>

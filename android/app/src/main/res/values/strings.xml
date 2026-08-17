@@ -101,4 +101,46 @@
     <string name="secure_connection">Private, direct connection</string>
     <string name="secure_connection_body">The app connects directly to your Moodle over HTTPS. Your password is never stored.</string>
     <string name="connect_to_moodle">Connect to Moodle</string>
+    <string name="course_section_supporting">Pick up where you left off</string>
+    <string name="empty_grades">No grades are available yet.</string>
+    <string name="next_activity">Next on your schedule</string>
+    <string name="nothing_due">You’re all caught up</string>
+    <string name="nothing_due_supporting">New deadlines and events will appear here.</string>
+    <string name="course_label">Course</string>
+    <string name="learning_space">Learning space</string>
+    <string name="courses_supporting">Search and open your current learning spaces.</string>
+    <string name="timeline">Your timeline</string>
+    <string name="calendar_supporting">Upcoming Moodle events in chronological order.</string>
+    <string name="inbox">Activity inbox</string>
+    <string name="notifications_supporting">Updates and notices from your connected Moodle site.</string>
+    <string name="account_and_privacy">Account &amp; privacy</string>
+    <string name="conversations">Conversations</string>
+    <string name="messages_supporting">Direct and group conversations from Moodle.</string>
+    <string name="start_conversation">Start a conversation</string>
+    <string name="find_someone">Who would you like to message?</string>
+    <string name="find_someone_supporting">Search for a Moodle user, then write a private message.</string>
+    <string name="onboarding_eyebrow">Your learning, connected</string>
+    <string name="setup_site">Secure setup</string>
+    <string name="setup_supporting">Connect directly to any compatible Moodle site over HTTPS.</string>
+    <string name="step_site_address">1  Site address</string>
+    <string name="step_sign_in">2  Sign in</string>
+    <string name="no_sections">No course sections are available.</string>
+    <string name="downloads">Downloads</string>
+    <string name="prepare_submission">Prepare your submission</string>
+    <plurals name="course_count">
+        <item quantity="one">%1$d course</item>
+        <item quantity="other">%1$d courses</item>
+    </plurals>
+    <plurals name="conversation_count">
+        <item quantity="one">%1$d conversation</item>
+        <item quantity="other">%1$d conversations</item>
+    </plurals>
+    <plurals name="connected_count">
+        <item quantity="one">%1$d connected site</item>
+        <item quantity="other">%1$d connected sites</item>
+    </plurals>
+    <plurals name="sections_count">
+        <item quantity="one">%1$d course section</item>
+        <item quantity="other">%1$d course sections</item>
+    </plurals>
 </resources>

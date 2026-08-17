@@ -7,10 +7,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -23,12 +27,17 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.AccountCircle
@@ -37,14 +46,20 @@ import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.icons.outlined.CloudDone
+import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.School
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -68,6 +83,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -79,6 +95,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -98,7 +115,9 @@ import org.moodle.core.model.MoodleGrade
 import org.moodle.core.model.MoodleNotification
 import org.moodle.core.model.SiteAccount
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 private enum class PortalDestination(val label: Int, val icon: ImageVector) {
     Home(R.string.home, Icons.Outlined.Home),
@@ -143,30 +162,42 @@ fun PortalAccountScreen(
     )
     BoxWithConstraints {
         val wide = maxWidth >= 600.dp
+        val expanded = maxWidth >= 840.dp
         Scaffold(
+            containerColor = Color.Transparent,
             topBar = {
                 TopAppBar(
                     title = {
-                        Column {
-                            Text(account.siteName, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                            Text(
-                                account.fullName ?: account.username.orEmpty(),
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = 1,
-                            )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
+                            if (wide) PortalBrandMark(38.dp)
+                            Column {
+                                Text(
+                                    account.siteName,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                                Text(
+                                    account.fullName ?: account.username.orEmpty(),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    maxLines = 1,
+                                )
+                            }
                         }
                     },
                     actions = {
                         IconButton(onClick = { selected = PortalDestination.Notifications }) {
-                            Box {
-                                Icon(Icons.Outlined.Notifications, stringResource(R.string.notifications))
-                                if (notifications.any { !it.read }) {
-                                    Box(
-                                        Modifier.align(Alignment.TopEnd).size(8.dp).clip(CircleShape)
-                                            .background(MaterialTheme.colorScheme.error),
-                                    )
+                            BadgedBox(
+                                badge = {
+                                    val unread = notifications.count { !it.read }
+                                    if (unread > 0) Badge { Text(unread.coerceAtMost(99).toString()) }
                                 }
+                            ) {
+                                Icon(Icons.Outlined.Notifications, stringResource(R.string.notifications))
                             }
                         }
                         IconButton(onClick = { viewModel.sync(account.id) }, enabled = online) {
@@ -193,103 +224,153 @@ fun PortalAccountScreen(
                             }
                         }
                     },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.96f),
+                    ),
                 )
             },
             bottomBar = {
                 if (!wide) {
-                    NavigationBar {
-                        primaryDestinations.forEach { destination ->
-                            NavigationBarItem(
-                                selected = selected == destination,
-                                onClick = { selected = destination },
-                                icon = { Icon(destination.icon, stringResource(destination.label)) },
-                                label = { Text(stringResource(destination.label)) },
-                            )
+                    Box(
+                        Modifier.fillMaxWidth().padding(start = 14.dp, end = 14.dp, bottom = 10.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Surface(
+                            shape = RoundedCornerShape(28.dp),
+                            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            shadowElevation = 8.dp,
+                            tonalElevation = 2.dp,
+                        ) {
+                            NavigationBar(
+                                containerColor = Color.Transparent,
+                                tonalElevation = 0.dp,
+                                modifier = Modifier.height(72.dp),
+                            ) {
+                                primaryDestinations.forEach { destination ->
+                                    NavigationBarItem(
+                                        selected = selected == destination,
+                                        onClick = { selected = destination },
+                                        icon = {
+                                            if (destination == PortalDestination.Messages &&
+                                                conversations.any { it.unreadCount > 0 }
+                                            ) {
+                                                BadgedBox(badge = { Badge() }) {
+                                                    Icon(destination.icon, stringResource(destination.label))
+                                                }
+                                            } else {
+                                                Icon(destination.icon, stringResource(destination.label))
+                                            }
+                                        },
+                                        label = { Text(stringResource(destination.label)) },
+                                    )
+                                }
+                            }
                         }
                     }
                 }
             },
         ) { padding ->
-            Row(Modifier.fillMaxSize().padding(padding)) {
-                if (wide) {
-                    NavigationRail {
-                        Spacer(Modifier.height(12.dp))
-                        primaryDestinations.forEach { destination ->
-                            NavigationRailItem(
-                                selected = selected == destination,
-                                onClick = { selected = destination },
-                                icon = { Icon(destination.icon, stringResource(destination.label)) },
-                                label = { Text(stringResource(destination.label)) },
-                            )
-                        }
-                    }
-                    VerticalDivider(Modifier.fillMaxHeight())
-                }
-                Column(Modifier.weight(1f).fillMaxHeight()) {
-                    if (!online) OfflineBanner(account.lastSyncEpochSeconds)
-                    if (account.authState == AuthState.ReauthenticationRequired && selected == PortalDestination.Home) {
-                        PortalReauthenticationScreen(account, viewModel, Modifier.weight(1f))
-                    } else {
-                        PullToRefreshBox(
-                            isRefreshing = appState.busy,
-                            onRefresh = { if (online) viewModel.sync(account.id) },
-                            modifier = Modifier.weight(1f),
+            PortalBackground(Modifier.padding(padding)) {
+                Row(Modifier.fillMaxSize()) {
+                    if (wide) {
+                        NavigationRail(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.78f),
+                            header = {
+                                PortalBrandMark(44.dp)
+                                Spacer(Modifier.height(18.dp))
+                            },
                         ) {
-                            val showSkeleton = appState.busy && when (selected) {
-                                PortalDestination.Home -> courses.isEmpty() && events.isEmpty()
-                                PortalDestination.Courses -> courses.isEmpty()
-                                PortalDestination.Messages -> conversations.isEmpty()
-                                PortalDestination.Calendar -> events.isEmpty()
-                                PortalDestination.Notifications -> notifications.isEmpty()
-                                PortalDestination.Settings -> false
+                            primaryDestinations.forEach { destination ->
+                                NavigationRailItem(
+                                    selected = selected == destination,
+                                    onClick = { selected = destination },
+                                    icon = { Icon(destination.icon, stringResource(destination.label)) },
+                                    label = { Text(stringResource(destination.label)) },
+                                )
                             }
-                            if (showSkeleton) {
-                                PortalLoadingSkeleton()
-                            } else AnimatedContent(
-                                targetState = selected,
-                                transitionSpec = { fadeIn(tween(160)) togetherWith fadeOut(tween(120)) },
-                                label = "portal-destination",
-                            ) { destination ->
-                                when (destination) {
-                                PortalDestination.Home -> PortalHomeScreen(
-                                    account,
-                                    courses,
-                                    grades,
-                                    events,
-                                    notifications,
-                                    conversations,
-                                    onCourse,
-                                    { selected = PortalDestination.Messages },
-                                    Modifier.fillMaxSize(),
-                                )
-                                PortalDestination.Courses -> PortalCourseList(courses, onCourse, Modifier.fillMaxSize())
-                                PortalDestination.Messages -> MessageListScreen(
-                                    account,
-                                    conversations,
-                                    online,
-                                    onConversation,
-                                    onNewMessage,
-                                    { viewModel.refreshConversations(account.id) },
-                                    Modifier.fillMaxSize(),
-                                )
-                                PortalDestination.Calendar -> PortalEventList(events, Modifier.fillMaxSize())
-                                PortalDestination.Notifications -> PortalNotificationList(
-                                    notifications,
-                                    { viewModel.markNotificationRead(account.id, it) },
-                                    Modifier.fillMaxSize(),
-                                )
-                                PortalDestination.Settings -> PortalSettingsScreen(
-                                    account,
-                                    showPreview,
-                                    viewModel::setMessagePreview,
-                                    { viewModel.removeAccount(account.id) },
-                                    {
-                                        if (Build.VERSION.SDK_INT >= 33) {
-                                            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
-                                        }
+                        }
+                        VerticalDivider(Modifier.fillMaxHeight(), color = MaterialTheme.colorScheme.outlineVariant)
+                    }
+                    Column(Modifier.weight(1f).fillMaxHeight()) {
+                        if (!online) OfflineBanner(account.lastSyncEpochSeconds)
+                        if (account.authState == AuthState.ReauthenticationRequired && selected == PortalDestination.Home) {
+                            PortalReauthenticationScreen(account, viewModel, Modifier.weight(1f))
+                        } else {
+                            PullToRefreshBox(
+                                isRefreshing = appState.busy,
+                                onRefresh = { if (online) viewModel.sync(account.id) },
+                                modifier = Modifier.weight(1f),
+                            ) {
+                                val showSkeleton = appState.busy && when (selected) {
+                                    PortalDestination.Home -> courses.isEmpty() && events.isEmpty()
+                                    PortalDestination.Courses -> courses.isEmpty()
+                                    PortalDestination.Messages -> conversations.isEmpty()
+                                    PortalDestination.Calendar -> events.isEmpty()
+                                    PortalDestination.Notifications -> notifications.isEmpty()
+                                    PortalDestination.Settings -> false
+                                }
+                                if (showSkeleton) {
+                                    PortalLoadingSkeleton()
+                                } else AnimatedContent(
+                                    targetState = selected,
+                                    transitionSpec = {
+                                        (fadeIn(tween(200)) + slideInHorizontally(tween(220)) { it / 14 }) togetherWith
+                                            (fadeOut(tween(140)) + slideOutHorizontally(tween(180)) { -it / 18 })
                                     },
-                                    Modifier.fillMaxSize(),
-                                )
+                                    label = "portal-destination",
+                                ) { destination ->
+                                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+                                        when (destination) {
+                                            PortalDestination.Home -> PortalHomeScreen(
+                                                account,
+                                                courses,
+                                                grades,
+                                                events,
+                                                notifications,
+                                                conversations,
+                                                onCourse,
+                                                { selected = PortalDestination.Messages },
+                                                expanded,
+                                                Modifier.fillMaxSize().widthIn(max = 1180.dp),
+                                            )
+                                            PortalDestination.Courses -> PortalCourseList(
+                                                courses,
+                                                onCourse,
+                                                expanded,
+                                                Modifier.fillMaxSize().widthIn(max = 1180.dp),
+                                            )
+                                            PortalDestination.Messages -> MessageListScreen(
+                                                account,
+                                                conversations,
+                                                online,
+                                                onConversation,
+                                                onNewMessage,
+                                                { viewModel.refreshConversations(account.id) },
+                                                Modifier.fillMaxSize().widthIn(max = 960.dp),
+                                            )
+                                            PortalDestination.Calendar -> PortalEventList(
+                                                events,
+                                                Modifier.fillMaxSize().widthIn(max = 900.dp),
+                                            )
+                                            PortalDestination.Notifications -> PortalNotificationList(
+                                                notifications,
+                                                { viewModel.markNotificationRead(account.id, it) },
+                                                Modifier.fillMaxSize().widthIn(max = 900.dp),
+                                            )
+                                            PortalDestination.Settings -> PortalSettingsScreen(
+                                                account,
+                                                showPreview,
+                                                viewModel::setMessagePreview,
+                                                { viewModel.removeAccount(account.id) },
+                                                {
+                                                    if (Build.VERSION.SDK_INT >= 33) {
+                                                        notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                                    }
+                                                },
+                                                Modifier.fillMaxSize().widthIn(max = 760.dp),
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -310,81 +391,213 @@ private fun PortalHomeScreen(
     conversations: List<MoodleConversation>,
     onCourse: (Long) -> Unit,
     onMessages: () -> Unit,
+    expanded: Boolean,
     modifier: Modifier,
 ) {
-    val unreadMessages = conversations.sumOf { it.unreadCount }
     val now = System.currentTimeMillis() / 1_000L
-    val activeCourses = courses.count { it.endDate == null || it.endDate >= now }
-    val upcomingEvents = events.count { it.startEpochSeconds >= now }
+    val summary = buildPortalDashboardSnapshot(courses, events, conversations, now)
+    val upcoming = events.filter { it.startEpochSeconds >= now }.sortedBy { it.startEpochSeconds }
     LazyColumn(
         modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(18.dp),
+        contentPadding = PaddingValues(start = 20.dp, top = 14.dp, end = 20.dp, bottom = 112.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
         item {
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                ),
-            ) {
-                Column(Modifier.fillMaxWidth().padding(22.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text(stringResource(R.string.welcome_back), style = MaterialTheme.typography.labelLarge)
-                    Text(
-                        account.fullName ?: account.username ?: account.siteName,
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    Text(
-                        account.lastSyncEpochSeconds?.let { stringResource(R.string.last_sync, portalDate(it)) }
-                            ?: stringResource(R.string.never_synced),
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                }
-            }
+            PortalHomeHero(account)
+        }
+        item {
+            summary.nextEvent?.let { PortalNextActionCard(it) }
+                ?: PortalNoUpcomingCard()
         }
         item {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 OverviewTile(
-                    unreadMessages.toString(),
+                    summary.unreadMessageCount.toString(),
                     stringResource(R.string.unread_messages),
                     Icons.Outlined.AddComment,
                     Modifier.weight(1f).clickable(onClick = onMessages),
                 )
                 OverviewTile(
-                    upcomingEvents.toString(),
+                    summary.upcomingEventCount.toString(),
                     stringResource(R.string.upcoming_schedule),
                     Icons.Outlined.CalendarMonth,
                     Modifier.weight(1f),
                 )
                 OverviewTile(
-                    activeCourses.toString(),
+                    summary.activeCourseCount.toString(),
                     stringResource(R.string.active_courses),
                     Icons.AutoMirrored.Outlined.MenuBook,
                     Modifier.weight(1f),
                 )
             }
         }
-        item { SectionTitle(stringResource(R.string.recent_courses), courses.size) }
-        if (courses.isEmpty()) item { PortalEmptyState(Icons.Outlined.School, stringResource(R.string.empty_courses)) }
-        items(courses.take(4), key = { "home-course:${it.id}" }) { PortalCourseCard(it, onCourse) }
-        item { SectionTitle(stringResource(R.string.upcoming_schedule), events.size) }
-        if (events.isEmpty()) item { PortalEmptyState(Icons.Outlined.CalendarMonth, stringResource(R.string.empty_events)) }
-        items(events.take(4), key = { "home-event:${it.id}" }) { PortalEventCard(it) }
+        if (courses.isNotEmpty()) {
+            item {
+                PortalSectionHeader(
+                    stringResource(R.string.recent_courses),
+                    supportingText = stringResource(R.string.course_section_supporting),
+                    trailing = {
+                        PortalStatusPill(courses.size.toString(), icon = Icons.Outlined.School)
+                    },
+                )
+            }
+            item {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    items(courses.take(if (expanded) 6 else 4), key = { "home-course:${it.id}" }) { course ->
+                        PortalHomeCourseCard(course, onCourse)
+                    }
+                }
+            }
+        } else {
+            item { PortalEmptyState(Icons.Outlined.School, stringResource(R.string.empty_courses)) }
+        }
+        if (expanded) {
+            item {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        PortalSectionHeader(stringResource(R.string.upcoming_schedule))
+                        if (upcoming.isEmpty()) {
+                            PortalEmptyState(Icons.Outlined.CalendarMonth, stringResource(R.string.empty_events))
+                        } else upcoming.take(3).forEach { PortalEventCard(it) }
+                    }
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        PortalSectionHeader(stringResource(R.string.grades))
+                        if (grades.isEmpty()) {
+                            PortalEmptyState(Icons.Outlined.CheckCircle, stringResource(R.string.empty_grades))
+                        } else grades.take(3).forEach { PortalGradeCard(it) }
+                    }
+                }
+            }
+        } else {
+            item { PortalSectionHeader(stringResource(R.string.upcoming_schedule)) }
+            if (upcoming.isEmpty()) item { PortalEmptyState(Icons.Outlined.CalendarMonth, stringResource(R.string.empty_events)) }
+            items(upcoming.take(4), key = { "home-event:${it.id}" }) { PortalEventCard(it) }
+            if (grades.isNotEmpty()) {
+                item { PortalSectionHeader(stringResource(R.string.grades)) }
+                items(grades.take(4), key = { "home-grade:${it.courseId}:${it.itemId}" }) { PortalGradeCard(it) }
+            }
+        }
         if (grades.isNotEmpty()) {
-            item { SectionTitle(stringResource(R.string.grades), grades.size) }
-            items(grades.take(4), key = { "home-grade:${it.courseId}:${it.itemId}" }) { PortalGradeCard(it) }
+            item { Spacer(Modifier.height(2.dp)) }
         }
         if (notifications.any { !it.read }) {
             item {
-                Text(
+                PortalStatusPill(
                     pluralStringResource(
                         R.plurals.unread_updates_count,
                         notifications.count { !it.read },
                         notifications.count { !it.read },
                     ),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    icon = Icons.Outlined.Notifications,
+                    emphasized = true,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PortalHomeHero(account: SiteAccount) {
+    Surface(
+        shape = MaterialTheme.shapes.large,
+        color = Color.Transparent,
+        shadowElevation = 6.dp,
+    ) {
+        Box(
+            Modifier.fillMaxWidth().background(
+                Brush.linearGradient(listOf(PortalNavy, PortalTealDark, Color(0xFF08766B))),
+            ),
+        ) {
+            Box(
+                Modifier.align(Alignment.TopEnd).size(142.dp).clip(CircleShape)
+                    .background(Color.White.copy(alpha = 0.055f)),
+            )
+            Column(
+                Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 22.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                Text(
+                    stringResource(R.string.welcome_back),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = Color(0xFF9EE3D6),
+                    fontWeight = FontWeight.Bold,
+                )
+                Text(
+                    account.fullName ?: account.username ?: account.siteName,
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = Color.White,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    account.siteName,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White.copy(alpha = 0.76f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Spacer(Modifier.height(10.dp))
+                PortalStatusPill(
+                    account.lastSyncEpochSeconds?.let { stringResource(R.string.last_sync, portalDate(it)) }
+                        ?: stringResource(R.string.never_synced),
+                    icon = Icons.Outlined.CloudDone,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PortalNextActionCard(event: MoodleCalendarEvent) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary.copy(alpha = 0.42f)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+    ) {
+        Row(
+            Modifier.fillMaxWidth().padding(18.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+        ) {
+            Surface(
+                shape = MaterialTheme.shapes.medium,
+                color = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+            ) {
+                Icon(Icons.Outlined.Schedule, null, Modifier.padding(12.dp).size(24.dp))
+            }
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                PortalEyebrow(stringResource(R.string.next_activity))
+                Text(event.name, style = MaterialTheme.typography.titleMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(
+                    portalDate(event.startEpochSeconds),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PortalNoUpcomingCard() {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceContainer,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    ) {
+        Row(
+            Modifier.fillMaxWidth().padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Icon(Icons.Outlined.CheckCircle, null, tint = MaterialTheme.colorScheme.primary)
+            Column {
+                Text(stringResource(R.string.nothing_due), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    stringResource(R.string.nothing_due_supporting),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -393,25 +606,55 @@ private fun PortalHomeScreen(
 
 @Composable
 private fun OverviewTile(value: String, label: String, icon: ImageVector, modifier: Modifier = Modifier) {
-    Card(modifier, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
-        Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Icon(icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
-            Text(value, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            Text(label, style = MaterialTheme.typography.labelSmall, maxLines = 2)
+    Surface(
+        modifier,
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        tonalElevation = 1.dp,
+    ) {
+        Column(Modifier.padding(horizontal = 13.dp, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+            Icon(icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(19.dp))
+            Text(value, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text(
+                label,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+            )
         }
     }
 }
 
 @Composable
-private fun SectionTitle(title: String, count: Int) {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-        Text(title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold)
-        Text(count.toString(), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+private fun PortalHomeCourseCard(course: MoodleCourse, onCourse: (Long) -> Unit) {
+    Card(
+        onClick = { onCourse(course.id) },
+        modifier = Modifier.width(246.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    ) {
+        PortalCourseCover(course.id, course.fullName, Modifier.fillMaxWidth().height(126.dp))
+        Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+            Text(course.fullName, style = MaterialTheme.typography.titleMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text(
+                course.shortName.ifBlank { stringResource(R.string.course_label) },
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
     }
 }
 
 @Composable
-private fun PortalCourseList(courses: List<MoodleCourse>, onCourse: (Long) -> Unit, modifier: Modifier) {
+private fun PortalCourseList(
+    courses: List<MoodleCourse>,
+    onCourse: (Long) -> Unit,
+    expanded: Boolean,
+    modifier: Modifier,
+) {
     var query by remember { mutableStateOf("") }
     var activeOnly by remember { mutableStateOf(true) }
     val now = System.currentTimeMillis() / 1_000L
@@ -421,55 +664,116 @@ private fun PortalCourseList(courses: List<MoodleCourse>, onCourse: (Long) -> Un
     }
     LazyColumn(
         modifier.fillMaxSize(),
-        contentPadding = PaddingValues(20.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 112.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         item {
-            Text(stringResource(R.string.courses), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-        }
-        item {
-            OutlinedTextField(
-                query,
-                { query = it },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                label = { Text(stringResource(R.string.search_courses)) },
-                leadingIcon = { Icon(Icons.Outlined.Search, null) },
-                trailingIcon = if (query.isNotBlank()) {
-                    { IconButton(onClick = { query = "" }) { Icon(Icons.Outlined.Clear, stringResource(R.string.clear)) } }
-                } else null,
-            )
-        }
-        item {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilterChip(activeOnly, { activeOnly = true }, { Text(stringResource(R.string.active_courses)) })
-                FilterChip(!activeOnly, { activeOnly = false }, { Text(stringResource(R.string.all_courses)) })
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                PortalEyebrow(stringResource(R.string.learning_space))
+                Text(stringResource(R.string.courses), style = MaterialTheme.typography.headlineLarge)
+                Text(
+                    stringResource(R.string.courses_supporting),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         }
-        if (filtered.isEmpty()) item { PortalEmptyState(Icons.Outlined.School, stringResource(R.string.empty_courses)) }
-        items(filtered, key = { it.id }) { PortalCourseCard(it, onCourse) }
+        item {
+            Surface(
+                shape = MaterialTheme.shapes.medium,
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+            ) {
+                Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    OutlinedTextField(
+                        query,
+                        { query = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        placeholder = { Text(stringResource(R.string.search_courses)) },
+                        leadingIcon = { Icon(Icons.Outlined.Search, null) },
+                        trailingIcon = if (query.isNotBlank()) {
+                            { IconButton(onClick = { query = "" }) { Icon(Icons.Outlined.Clear, stringResource(R.string.clear)) } }
+                        } else null,
+                        shape = CircleShape,
+                    )
+                    Row(
+                        Modifier.horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        FilterChip(activeOnly, { activeOnly = true }, { Text(stringResource(R.string.active_courses)) })
+                        FilterChip(!activeOnly, { activeOnly = false }, { Text(stringResource(R.string.all_courses)) })
+                        PortalStatusPill(
+                            pluralStringResource(R.plurals.course_count, filtered.size, filtered.size),
+                            icon = Icons.Outlined.School,
+                        )
+                    }
+                }
+            }
+        }
+        if (filtered.isEmpty()) {
+            item { PortalEmptyState(Icons.Outlined.School, stringResource(R.string.empty_courses)) }
+        } else if (expanded) {
+            items(filtered.chunked(2), key = { row -> row.joinToString(":") { it.id.toString() } }) { row ->
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                    row.forEach { course ->
+                        PortalCourseCard(course, onCourse, Modifier.weight(1f), vertical = true)
+                    }
+                    if (row.size == 1) Spacer(Modifier.weight(1f))
+                }
+            }
+        } else {
+            items(filtered, key = { it.id }) { PortalCourseCard(it, onCourse) }
+        }
     }
 }
 
 @Composable
-private fun PortalCourseCard(course: MoodleCourse, onCourse: (Long) -> Unit) {
-    val accent = portalAccent(course.id)
+private fun PortalCourseCard(
+    course: MoodleCourse,
+    onCourse: (Long) -> Unit,
+    modifier: Modifier = Modifier,
+    vertical: Boolean = false,
+) {
     Card(
-        Modifier.fillMaxWidth().clickable { onCourse(course.id) },
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        onClick = { onCourse(course.id) },
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp, pressedElevation = 0.dp),
     ) {
+        if (vertical) {
+            PortalCourseCover(course.id, course.fullName, Modifier.fillMaxWidth().height(132.dp))
+        }
         Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
-            Box(Modifier.width(6.dp).fillMaxHeight().background(accent))
-            Column(Modifier.padding(16.dp).weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text(course.fullName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            if (!vertical) {
+                PortalCourseCover(
+                    course.id,
+                    course.fullName,
+                    Modifier.width(94.dp).fillMaxHeight(),
+                    compact = true,
+                )
+            }
+            Column(Modifier.padding(16.dp).weight(1f), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                Text(course.fullName, style = MaterialTheme.typography.titleMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 if (course.shortName.isNotBlank() && course.shortName != course.fullName) {
-                    Text(course.shortName, style = MaterialTheme.typography.labelMedium, color = accent)
+                    PortalStatusPill(course.shortName, emphasized = true)
                 }
                 if (course.summaryHtml.isNotBlank()) {
-                    Text(portalPlainText(course.summaryHtml), maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    Text(
+                        portalPlainText(course.summaryHtml),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
                 course.endDate?.let {
-                    Text(stringResource(R.string.course_ends, portalDate(it)), style = MaterialTheme.typography.labelSmall)
+                    Text(
+                        stringResource(R.string.course_ends, portalDate(it)),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                 }
             }
         }
@@ -478,29 +782,66 @@ private fun PortalCourseCard(course: MoodleCourse, onCourse: (Long) -> Unit) {
 
 @Composable
 private fun PortalEventList(events: List<MoodleCalendarEvent>, modifier: Modifier) {
+    val upcoming = events.sortedBy { it.startEpochSeconds }
     LazyColumn(
         modifier.fillMaxSize(),
-        contentPadding = PaddingValues(20.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 112.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        item { Text(stringResource(R.string.calendar), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold) }
-        if (events.isEmpty()) item { PortalEmptyState(Icons.Outlined.CalendarMonth, stringResource(R.string.empty_events)) }
-        items(events, key = { it.id }) { PortalEventCard(it) }
+        item {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                PortalEyebrow(stringResource(R.string.timeline))
+                Text(stringResource(R.string.calendar), style = MaterialTheme.typography.headlineLarge)
+                Text(
+                    stringResource(R.string.calendar_supporting),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+        if (upcoming.isEmpty()) item { PortalEmptyState(Icons.Outlined.CalendarMonth, stringResource(R.string.empty_events)) }
+        items(upcoming, key = { it.id }) { PortalEventCard(it) }
     }
 }
 
 @Composable
 private fun PortalEventCard(event: MoodleCalendarEvent) {
-    Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+    Surface(
+        Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    ) {
         Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            Surface(shape = MaterialTheme.shapes.small, color = MaterialTheme.colorScheme.tertiaryContainer) {
-                Icon(Icons.Outlined.CalendarMonth, null, Modifier.padding(10.dp), tint = MaterialTheme.colorScheme.onTertiaryContainer)
+            Surface(
+                modifier = Modifier.width(58.dp),
+                shape = MaterialTheme.shapes.small,
+                color = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+            ) {
+                Column(
+                    Modifier.fillMaxWidth().padding(vertical = 9.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(portalMonth(event.startEpochSeconds), style = MaterialTheme.typography.labelSmall)
+                    Text(portalDay(event.startEpochSeconds), style = MaterialTheme.typography.headlineSmall)
+                }
             }
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(event.name, fontWeight = FontWeight.SemiBold)
-                Text(portalDate(event.startEpochSeconds), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+                Text(event.name, style = MaterialTheme.typography.titleMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(
+                    portalTime(event.startEpochSeconds),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                )
                 if (event.descriptionHtml.isNotBlank()) {
-                    Text(portalPlainText(event.descriptionHtml), maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    Text(
+                        portalPlainText(event.descriptionHtml),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
             }
         }
@@ -509,11 +850,25 @@ private fun PortalEventCard(event: MoodleCalendarEvent) {
 
 @Composable
 private fun PortalGradeCard(grade: MoodleGrade) {
-    Card(Modifier.fillMaxWidth()) {
+    Surface(
+        Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    ) {
         Row(Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Outlined.CheckCircle, null, tint = MaterialTheme.colorScheme.primary)
-            Text(grade.itemName, Modifier.weight(1f), maxLines = 2, overflow = TextOverflow.Ellipsis)
-            Text(grade.gradeFormatted.ifBlank { grade.percentageFormatted }, fontWeight = FontWeight.Bold)
+            Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primaryContainer) {
+                Icon(Icons.Outlined.CheckCircle, null, Modifier.padding(9.dp).size(18.dp), tint = MaterialTheme.colorScheme.primary)
+            }
+            Column(Modifier.weight(1f)) {
+                Text(grade.itemName, style = MaterialTheme.typography.titleMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(grade.rangeFormatted, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Text(
+                grade.gradeFormatted.ifBlank { grade.percentageFormatted },
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary,
+            )
         }
     }
 }
@@ -524,23 +879,51 @@ private fun PortalNotificationList(
     onOpen: (MoodleNotification) -> Unit,
     modifier: Modifier,
 ) {
-    LazyColumn(modifier.fillMaxSize(), contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        item { Text(stringResource(R.string.notifications), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold) }
+    LazyColumn(
+        modifier.fillMaxSize(),
+        contentPadding = PaddingValues(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 112.dp),
+        verticalArrangement = Arrangement.spacedBy(0.dp),
+    ) {
+        item {
+            Column(Modifier.padding(bottom = 18.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                PortalEyebrow(stringResource(R.string.inbox))
+                Text(stringResource(R.string.notifications), style = MaterialTheme.typography.headlineLarge)
+                Text(
+                    stringResource(R.string.notifications_supporting),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
         if (notifications.isEmpty()) item { PortalEmptyState(Icons.Outlined.Notifications, stringResource(R.string.empty_notifications)) }
         items(notifications, key = { it.id }) { notification ->
-            Card(Modifier.fillMaxWidth().clickable { onOpen(notification) }) {
+            Surface(
+                Modifier.fillMaxWidth().clickable { onOpen(notification) },
+                color = if (notification.read) Color.Transparent else MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.34f),
+            ) {
                 Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     Box(
                         Modifier.padding(top = 6.dp).size(9.dp).clip(CircleShape)
                             .background(if (notification.read) MaterialTheme.colorScheme.outlineVariant else MaterialTheme.colorScheme.primary),
                     )
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(notification.subject, fontWeight = if (notification.read) FontWeight.Normal else FontWeight.SemiBold)
-                        Text(portalPlainText(notification.fullMessageHtml), maxLines = 2, overflow = TextOverflow.Ellipsis)
-                        Text(portalDate(notification.createdAt), style = MaterialTheme.typography.labelSmall)
+                        Text(
+                            notification.subject,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = if (notification.read) FontWeight.Medium else FontWeight.Bold,
+                        )
+                        Text(
+                            portalPlainText(notification.fullMessageHtml),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        Text(portalDate(notification.createdAt), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
                     }
                 }
             }
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         }
     }
 }
@@ -555,35 +938,58 @@ private fun PortalSettingsScreen(
     modifier: Modifier,
 ) {
     var confirm by remember { mutableStateOf(false) }
-    LazyColumn(modifier.fillMaxSize(), contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        item { Text(stringResource(R.string.settings), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold) }
+    LazyColumn(
+        modifier.fillMaxSize(),
+        contentPadding = PaddingValues(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 112.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
         item {
-            Card(Modifier.fillMaxWidth()) {
-                Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                PortalEyebrow(stringResource(R.string.account_and_privacy))
+                Text(stringResource(R.string.settings), style = MaterialTheme.typography.headlineLarge)
+            }
+        }
+        item {
+            Surface(
+                Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.large,
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+            ) {
+                Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        InitialAvatar(account.fullName ?: account.username ?: account.siteName, 44.dp)
+                        InitialAvatar(account.fullName ?: account.username ?: account.siteName, 52.dp)
                         Column(Modifier.weight(1f)) {
-                            Text(account.fullName ?: account.username.orEmpty(), fontWeight = FontWeight.SemiBold)
-                            Text(account.siteName, style = MaterialTheme.typography.bodySmall)
+                            Text(account.fullName ?: account.username.orEmpty(), style = MaterialTheme.typography.titleLarge)
+                            Text(account.siteName, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                     HorizontalDivider(Modifier.padding(vertical = 10.dp))
-                    Text(account.baseUrl, style = MaterialTheme.typography.bodySmall)
-                    Text(
+                    Text(account.baseUrl, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    PortalStatusPill(
                         if (account.connectionMode == ConnectionMode.NativeApi) "Native API" else stringResource(R.string.html_mode),
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.labelLarge,
+                        icon = Icons.Outlined.Security,
+                        emphasized = true,
                     )
                     account.moodleVersion?.let { Text(stringResource(R.string.moodle_version, it)) }
                 }
             }
         }
         item {
-            Card(Modifier.fillMaxWidth()) {
+            Surface(
+                Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.medium,
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+            ) {
                 Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.message_preview_setting), fontWeight = FontWeight.SemiBold)
-                        Text(stringResource(R.string.message_preview_setting_body), style = MaterialTheme.typography.bodySmall)
+                        Text(stringResource(R.string.message_preview_setting), style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            stringResource(R.string.message_preview_setting_body),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
                     }
                     Switch(showPreview, onPreviewChanged)
                 }
@@ -614,41 +1020,66 @@ private fun PortalSettingsScreen(
 private fun PortalReauthenticationScreen(account: SiteAccount, viewModel: AppViewModel, modifier: Modifier) {
     var username by remember(account.id) { mutableStateOf(account.username.orEmpty()) }
     var password by remember(account.id) { mutableStateOf("") }
-    Column(modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        Icon(Icons.Outlined.AccountCircle, null, Modifier.size(48.dp), tint = MaterialTheme.colorScheme.primary)
-        Text(stringResource(R.string.session_expired), style = MaterialTheme.typography.headlineSmall)
-        Text(stringResource(R.string.session_expired_body))
-        OutlinedTextField(username, { username = it }, label = { Text(stringResource(R.string.username)) }, modifier = Modifier.fillMaxWidth())
-        OutlinedTextField(
-            password,
-            { password = it },
-            label = { Text(stringResource(R.string.password)) },
-            visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth(),
-        )
-        Button(
-            onClick = { viewModel.reauthenticate(account.id, username, password); password = "" },
-            enabled = username.isNotBlank() && password.isNotBlank(),
-        ) { Text(stringResource(R.string.sign_in)) }
+    Box(modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.TopCenter) {
+        Surface(
+            Modifier.fillMaxWidth().widthIn(max = 560.dp),
+            shape = MaterialTheme.shapes.large,
+            color = MaterialTheme.colorScheme.surface,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        ) {
+            Column(Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                Surface(shape = MaterialTheme.shapes.medium, color = MaterialTheme.colorScheme.errorContainer) {
+                    Icon(Icons.Outlined.AccountCircle, null, Modifier.padding(12.dp).size(30.dp), tint = MaterialTheme.colorScheme.error)
+                }
+                Text(stringResource(R.string.session_expired), style = MaterialTheme.typography.headlineSmall)
+                Text(stringResource(R.string.session_expired_body), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                OutlinedTextField(username, { username = it }, label = { Text(stringResource(R.string.username)) }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(
+                    password,
+                    { password = it },
+                    label = { Text(stringResource(R.string.password)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                Button(
+                    onClick = { viewModel.reauthenticate(account.id, username, password); password = "" },
+                    enabled = username.isNotBlank() && password.isNotBlank(),
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
+                ) { Text(stringResource(R.string.sign_in)) }
+            }
+        }
     }
 }
 
 @Composable
 private fun OfflineBanner(lastSync: Long?) {
-    Surface(color = MaterialTheme.colorScheme.errorContainer, contentColor = MaterialTheme.colorScheme.onErrorContainer) {
-        Text(
-            lastSync?.let { stringResource(R.string.offline_cached_at, portalDate(it)) }
-                ?: stringResource(R.string.offline_no_cache),
+    Surface(color = MaterialTheme.colorScheme.tertiaryContainer, contentColor = MaterialTheme.colorScheme.onTertiaryContainer) {
+        Row(
             Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
-            style = MaterialTheme.typography.labelMedium,
-        )
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Icon(Icons.Outlined.CloudOff, null, Modifier.size(16.dp))
+            Spacer(Modifier.width(8.dp))
+            Text(
+                lastSync?.let { stringResource(R.string.offline_cached_at, portalDate(it)) }
+                    ?: stringResource(R.string.offline_no_cache),
+                style = MaterialTheme.typography.labelMedium,
+            )
+        }
     }
 }
 
 @Composable
 fun InitialAvatar(name: String, size: androidx.compose.ui.unit.Dp) {
     val initial = name.trim().firstOrNull()?.uppercase() ?: "M"
-    Surface(modifier = Modifier.size(size), shape = CircleShape, color = portalAccent(name.hashCode().toLong())) {
+    val color = portalCoursePalette(name.hashCode().toLong(), false).end
+    Surface(
+        modifier = Modifier.size(size),
+        shape = CircleShape,
+        color = color,
+        shadowElevation = 2.dp,
+    ) {
         Box(contentAlignment = Alignment.Center) {
             Text(initial, color = Color.White, fontWeight = FontWeight.Bold)
         }
@@ -657,13 +1088,22 @@ fun InitialAvatar(name: String, size: androidx.compose.ui.unit.Dp) {
 
 @Composable
 fun PortalEmptyState(icon: ImageVector, message: String, modifier: Modifier = Modifier) {
-    Column(
-        modifier.fillMaxWidth().padding(vertical = 40.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+    Surface(
+        modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.72f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
-        Icon(icon, null, Modifier.size(42.dp), tint = MaterialTheme.colorScheme.outline)
-        Text(message, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Column(
+            Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 34.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primaryContainer) {
+                Icon(icon, null, Modifier.padding(13.dp).size(28.dp), tint = MaterialTheme.colorScheme.primary)
+            }
+            Text(message, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
     }
 }
 
@@ -671,26 +1111,30 @@ fun PortalEmptyState(icon: ImageVector, message: String, modifier: Modifier = Mo
 private fun PortalLoadingSkeleton() {
     Column(
         Modifier.fillMaxSize().padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        repeat(4) { index ->
-            Card(
-                Modifier.fillMaxWidth().height(if (index == 0) 112.dp else 84.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.55f)),
+        Surface(
+            Modifier.fillMaxWidth().height(166.dp),
+            shape = MaterialTheme.shapes.large,
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        ) {}
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            repeat(3) {
+                Surface(
+                    Modifier.weight(1f).height(96.dp),
+                    shape = MaterialTheme.shapes.medium,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
+                ) {}
+            }
+        }
+        repeat(3) {
+            Surface(
+                Modifier.fillMaxWidth().height(94.dp),
+                shape = MaterialTheme.shapes.medium,
+                color = MaterialTheme.colorScheme.surfaceContainer,
             ) {}
         }
     }
-}
-
-private fun portalAccent(seed: Long): Color {
-    val colors = listOf(
-        Color(0xFF006B5F),
-        Color(0xFF355F8A),
-        Color(0xFF7B526B),
-        Color(0xFF7A5D00),
-        Color(0xFF496647),
-    )
-    return colors[((seed % colors.size + colors.size) % colors.size).toInt()]
 }
 
 private fun portalPlainText(html: String): String = org.jsoup.Jsoup.parseBodyFragment(html).text().trim()
@@ -699,3 +1143,12 @@ private fun portalDate(epochSeconds: Long): String = DateFormat.getDateTimeInsta
     DateFormat.MEDIUM,
     DateFormat.SHORT,
 ).format(Date(epochSeconds * 1_000L))
+
+private fun portalMonth(epochSeconds: Long): String = SimpleDateFormat("MMM", Locale.getDefault())
+    .format(Date(epochSeconds * 1_000L)).uppercase()
+
+private fun portalDay(epochSeconds: Long): String = SimpleDateFormat("d", Locale.getDefault())
+    .format(Date(epochSeconds * 1_000L))
+
+private fun portalTime(epochSeconds: Long): String = DateFormat.getTimeInstance(DateFormat.SHORT)
+    .format(Date(epochSeconds * 1_000L))
