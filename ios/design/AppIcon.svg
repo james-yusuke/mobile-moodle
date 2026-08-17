@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="background" x1="120" y1="96" x2="900" y2="930" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#08766b"/>
+      <stop offset="0.55" stop-color="#005a52"/>
+      <stop offset="1" stop-color="#0b2733"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="330" y1="390" x2="700" y2="680" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e9eee9"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#background)"/>
+  <circle cx="824" cy="186" r="270" fill="none" stroke="#74d6c5" stroke-opacity="0.18" stroke-width="76"/>
+  <circle cx="824" cy="186" r="154" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="3"/>
+  <path d="M236 503 512 300l276 203-276 188L236 503Z" fill="url(#paper)"/>
+  <path d="M351 588v128c93 73 229 73 322 0V588L512 698 351 588Z" fill="#dce8e4"/>
+  <path d="M788 503v178" fill="none" stroke="#f0c665" stroke-width="30" stroke-linecap="round"/>
+  <circle cx="788" cy="726" r="42" fill="#c5963f"/>
+  <circle cx="790" cy="226" r="54" fill="#c5963f"/>
+</svg>

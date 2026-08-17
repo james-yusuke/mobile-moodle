@@ -73,6 +73,9 @@ unlinked_spec.ds
 **/ios/**/.symlinks/
 **/ios/**/profile
 **/ios/**/xcuserdata
+ios/local-test.env
+ios/.swiftpm/
+ios/*.xcresult
 **/ios/.generated/
 **/ios/Flutter/.last_build_id
 **/ios/Flutter/App.framework
