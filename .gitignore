@@ -55,7 +55,9 @@ unlinked_spec.ds
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
+**/android/keystore.properties
 *.jks
+*.keystore
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
@@ -76,6 +78,8 @@ unlinked_spec.ds
 ios/local-test.env
 ios/.swiftpm/
 ios/*.xcresult
+*.p12
+*.mobileprovision
 **/ios/.generated/
 **/ios/Flutter/.last_build_id
 **/ios/Flutter/App.framework

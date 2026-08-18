@@ -36,6 +36,10 @@ xcodebuild -project ios/ios.xcodeproj -scheme ios \
 
 iOS版はSwift 6、SwiftUI、SwiftData、URLSession、Keychain、BackgroundTasks、UserNotificationsで構成し、WKWebViewやKotlin共有コードは使用しません。HTML解析ライブラリはSwiftSoup 2.13.5へ固定しています。
 
+## リリース
+
+`vX.Y.Z`形式のタグをpushすると、GitHub Actionsが署名済みAPKとIPAをビルドし、チェックサム付きのGitHub Releaseを作成します。初回に必要な署名用Secretsとタグ作成手順は[RELEASING.md](RELEASING.md)を参照してください。署名鍵、証明書、Provisioning ProfileはGitへ追加しないでください。
+
 ## ローカル実サイトテスト
 
 `android/local-test.properties.example` を `android/local-test.properties` にコピーし、手元のテスト専用 Moodle アカウントを設定します。実ファイルは Git で無視され、テストはログインと閲覧だけを行います。
