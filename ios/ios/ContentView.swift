@@ -10,6 +10,9 @@ struct ContentView: View {
             Group {
                 if model.activeAccount == nil {
                     AccountLandingView(onAddSite: { showAddSite = true })
+                } else if let account = model.activeAccount,
+                          account.authenticationState == .reauthenticationRequired {
+                    ReauthenticationGateView(account: account)
                 } else {
                     PortalShellView(onAddSite: { showAddSite = true })
                 }

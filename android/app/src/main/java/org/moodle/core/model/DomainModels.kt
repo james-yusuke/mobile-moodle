@@ -261,4 +261,18 @@ data class MoodleError(
     val code: String,
     val message: String,
     val recoverable: Boolean = true,
-)
+) {
+    val requiresReauthentication: Boolean
+        get() = code.lowercase() in AUTHENTICATION_ERROR_CODES
+
+    private companion object {
+        val AUTHENTICATION_ERROR_CODES = setOf(
+            "session_expired",
+            "invalidtoken",
+            "requireloginerror",
+            "invalidsesskey",
+            "sessionipnomatch",
+            "session_context_missing",
+        )
+    }
+}

@@ -40,6 +40,7 @@ interface MoodleAuthRepository {
     fun beginSso(config: MoodlePublicConfig): MoodleResult<String>
     suspend fun completeSso(callback: Uri): MoodleResult<SiteAccount>
     suspend fun activate(accountId: String)
+    suspend fun requireReauthentication(accountId: String)
     suspend fun remove(accountId: String)
 }
 
@@ -116,24 +117,56 @@ class DefaultMoodleAuthRepository @Inject constructor(
     ): MoodleResult<SiteAccount> = safely {
         val existing = dao.getAccount(accountId)?.toDomain(gson)
             ?: throw MoodleRepositoryException("account_missing", "The Moodle account no longer exists")
-        require(existing.connectionMode == ConnectionMode.NativeHtml) { "Only HTML accounts use this sign-in flow" }
-        val result = htmlDataSource.login(
-            accountId,
-            MoodlePublicConfig(existing.baseUrl, existing.siteName, false, 1, null, true),
-            username.trim(),
-            password,
-        )
-        val candidate = existing.copy(
-            username = username.trim(),
-            userId = result.identity.userId ?: existing.userId,
-            fullName = result.identity.fullName ?: existing.fullName,
-            siteName = result.identity.siteName,
-            capabilities = SiteCapabilities(htmlFeatures = result.identity.features),
-            authState = AuthState.Authenticated,
-            moodleVersion = result.identity.moodleVersion,
-            themeFamily = result.identity.themeFamily,
-        )
-        val refreshed = candidate.copy(capabilities = SiteCapabilities(htmlFeatures = validatedHtmlFeatures(candidate)))
+        val cleanedUsername = username.trim()
+        require(cleanedUsername.isNotEmpty() && password.isNotEmpty()) { "Enter your username and password" }
+        val refreshed = if (existing.connectionMode == ConnectionMode.NativeHtml) {
+            val result = htmlDataSource.login(
+                accountId,
+                MoodlePublicConfig(existing.baseUrl, existing.siteName, false, 1, null, true),
+                cleanedUsername,
+                password,
+            )
+            val candidate = existing.copy(
+                username = cleanedUsername,
+                userId = result.identity.userId ?: existing.userId,
+                fullName = result.identity.fullName ?: existing.fullName,
+                siteName = result.identity.siteName,
+                capabilities = SiteCapabilities(htmlFeatures = result.identity.features),
+                authState = AuthState.Authenticated,
+                moodleVersion = result.identity.moodleVersion,
+                themeFamily = result.identity.themeFamily,
+            )
+            candidate.copy(capabilities = SiteCapabilities(htmlFeatures = validatedHtmlFeatures(candidate)))
+        } else {
+            val response = api.loginToken(
+                "${existing.baseUrl}/login/token.php?lang=${Locale.getDefault().language}",
+                cleanedUsername,
+                password,
+            )
+            val token = response.token ?: throw MoodleRepositoryException(
+                response.errorcode ?: "login_failed",
+                response.error ?: "Login failed",
+            )
+            val siteInfo = callRest(
+                existing.baseUrl,
+                token,
+                "core_webservice_get_site_info",
+                emptyMap(),
+            ).asJsonObject
+            val functions = siteInfo.getAsJsonArray("functions")
+                ?.mapNotNull { it.asJsonObject.get("name")?.asString }
+                ?.toSet()
+                .orEmpty()
+            tokenStore.put(existing.id, token, response.privateToken)
+            existing.copy(
+                username = siteInfo.string("username") ?: cleanedUsername,
+                userId = siteInfo.long("userid") ?: existing.userId,
+                fullName = siteInfo.string("fullname") ?: existing.fullName,
+                siteName = siteInfo.string("sitename") ?: existing.siteName,
+                capabilities = SiteCapabilities(functions),
+                authState = AuthState.Authenticated,
+            )
+        }
         dao.upsertAccount(refreshed.toEntity(gson))
         activate(refreshed.id)
         refreshed
@@ -166,6 +199,12 @@ class DefaultMoodleAuthRepository @Inject constructor(
     override suspend fun activate(accountId: String) {
         dao.setActiveAccount(accountId)
         appPreferences.setActiveAccountId(accountId)
+    }
+
+    override suspend fun requireReauthentication(accountId: String) {
+        val account = dao.getAccount(accountId)?.toDomain(gson) ?: return
+        dao.upsertAccount(account.copy(authState = AuthState.ReauthenticationRequired).toEntity(gson))
+        activate(accountId)
     }
 
     override suspend fun remove(accountId: String) {

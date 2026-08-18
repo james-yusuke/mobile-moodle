@@ -34,10 +34,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.collectLatest
 import org.moodle.R
+import org.moodle.core.model.AuthState
 import org.moodle.core.model.SiteAccount
 
 private const val ROUTE_SITES = "sites"
 private const val ROUTE_ADD = "add"
+private const val ROUTE_REAUTHENTICATE = "reauthenticate"
 
 @Composable
 fun MobileMoodleApp(viewModel: AppViewModel) {
@@ -62,6 +64,7 @@ fun MobileMoodleApp(viewModel: AppViewModel) {
                 is AppEvent.OpenConversation -> navController.navigate(
                     "conversation/${event.accountId}/${event.conversationId}",
                 ) { launchSingleTop = true }
+                is AppEvent.RequireLogin -> navController.openLogin(event.accountId)
                 is AppEvent.OpenExternal -> runCatching {
                     CustomTabsIntent.Builder().setShowTitle(true).build().launchUrl(context, Uri.parse(event.url))
                 }
@@ -79,6 +82,11 @@ fun MobileMoodleApp(viewModel: AppViewModel) {
                     popUpTo(ROUTE_SITES) { inclusive = true }
                 }
             }
+        }
+    }
+    LaunchedEffect(activeAccount?.id, activeAccount?.authState) {
+        activeAccount?.takeIf { it.authState == AuthState.ReauthenticationRequired }?.let {
+            navController.openLogin(it.id)
         }
     }
 
@@ -124,17 +132,27 @@ fun MobileMoodleApp(viewModel: AppViewModel) {
                                 onDispose = viewModel::clearInspectedSite,
                             )
                         }
+                        composable("$ROUTE_REAUTHENTICATE/{accountId}") { entry ->
+                            val accountId = entry.arguments?.getString("accountId").orEmpty()
+                            accounts.firstOrNull { it.id == accountId }?.let { account ->
+                                PortalReauthenticationScreen(account, viewModel, Modifier.fillMaxSize())
+                            } ?: LoadingBox()
+                        }
                         composable("native/{accountId}") { entry ->
                             val accountId = entry.arguments?.getString("accountId").orEmpty()
                             accounts.firstOrNull { it.id == accountId }?.let { account ->
-                                PortalAccountScreen(
-                                    account = account,
-                                    viewModel = viewModel,
-                                    onSites = { navController.navigate(ROUTE_SITES) },
-                                    onCourse = { navController.navigate("course/$accountId/$it") },
-                                    onConversation = { navController.navigate("conversation/$accountId/$it") },
-                                    onNewMessage = { navController.navigate("new-message/$accountId") },
-                                )
+                                if (account.authState == AuthState.ReauthenticationRequired) {
+                                    PortalReauthenticationScreen(account, viewModel, Modifier.fillMaxSize())
+                                } else {
+                                    PortalAccountScreen(
+                                        account = account,
+                                        viewModel = viewModel,
+                                        onSites = { navController.navigate(ROUTE_SITES) },
+                                        onCourse = { navController.navigate("course/$accountId/$it") },
+                                        onConversation = { navController.navigate("conversation/$accountId/$it") },
+                                        onNewMessage = { navController.navigate("new-message/$accountId") },
+                                    )
+                                }
                             } ?: LoadingBox()
                         }
                         composable("course/{accountId}/{courseId}") { entry ->
@@ -196,6 +214,13 @@ fun MobileMoodleApp(viewModel: AppViewModel) {
 
 private fun NavHostController.openAccount(account: SiteAccount) {
     navigate("native/${account.id}") {
+        launchSingleTop = true
+        popUpTo(ROUTE_SITES)
+    }
+}
+
+private fun NavHostController.openLogin(accountId: String) {
+    navigate("$ROUTE_REAUTHENTICATE/$accountId") {
         launchSingleTop = true
         popUpTo(ROUTE_SITES)
     }

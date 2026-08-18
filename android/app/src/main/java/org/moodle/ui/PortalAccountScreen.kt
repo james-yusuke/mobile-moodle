@@ -1017,7 +1017,7 @@ private fun PortalSettingsScreen(
 }
 
 @Composable
-private fun PortalReauthenticationScreen(account: SiteAccount, viewModel: AppViewModel, modifier: Modifier) {
+internal fun PortalReauthenticationScreen(account: SiteAccount, viewModel: AppViewModel, modifier: Modifier) {
     var username by remember(account.id) { mutableStateOf(account.username.orEmpty()) }
     var password by remember(account.id) { mutableStateOf("") }
     Box(modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.TopCenter) {
@@ -1032,6 +1032,7 @@ private fun PortalReauthenticationScreen(account: SiteAccount, viewModel: AppVie
                     Icon(Icons.Outlined.AccountCircle, null, Modifier.padding(12.dp).size(30.dp), tint = MaterialTheme.colorScheme.error)
                 }
                 Text(stringResource(R.string.session_expired), style = MaterialTheme.typography.headlineSmall)
+                Text(account.siteName, style = MaterialTheme.typography.titleMedium)
                 Text(stringResource(R.string.session_expired_body), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 OutlinedTextField(username, { username = it }, label = { Text(stringResource(R.string.username)) }, modifier = Modifier.fillMaxWidth())
                 OutlinedTextField(

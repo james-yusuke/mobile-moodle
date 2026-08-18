@@ -16,6 +16,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.moodle.core.model.AssignmentSubmissionStatus
+import org.moodle.core.model.AuthState
 import org.moodle.core.model.ConnectionMode
 import org.moodle.core.model.MoodleAssignment
 import org.moodle.core.model.MoodleCalendarEvent
@@ -60,6 +61,7 @@ sealed interface AppEvent {
     data class OpenExternal(val url: String) : AppEvent
     data class OpenFile(val file: File, val mimeType: String?) : AppEvent
     data class OpenConversation(val accountId: String, val conversationId: Long) : AppEvent
+    data class RequireLogin(val accountId: String) : AppEvent
     data object ReturnToAccounts : AppEvent
 }
 
@@ -124,13 +126,21 @@ class AppViewModel @Inject constructor(
 
     fun openAccount(account: SiteAccount) = viewModelScope.launch {
         authRepository.activate(account.id)
-        _events.send(AppEvent.OpenAccount(account.copy(isActive = true)))
+        if (account.authState == AuthState.ReauthenticationRequired) {
+            _events.send(AppEvent.RequireLogin(account.id))
+        } else {
+            _events.send(AppEvent.OpenAccount(account.copy(isActive = true)))
+        }
     }
 
     fun handleMessageIntent(accountId: String?, conversationId: Long?) = viewModelScope.launch {
         if (accountId.isNullOrBlank() || conversationId == null || conversationId <= 0) return@launch
         authRepository.activate(accountId)
-        _events.send(AppEvent.OpenConversation(accountId, conversationId))
+        if (accounts.value.firstOrNull { it.id == accountId }?.authState == AuthState.ReauthenticationRequired) {
+            _events.send(AppEvent.RequireLogin(accountId))
+        } else {
+            _events.send(AppEvent.OpenConversation(accountId, conversationId))
+        }
     }
 
     fun removeAccount(accountId: String) = viewModelScope.launch {
@@ -140,15 +150,18 @@ class AppViewModel @Inject constructor(
 
     fun sync(accountId: String) = launchBusy {
         when (val result = moodleRepository.sync(accountId)) {
-            is MoodleResult.Success -> moodleRepository.syncMessages(accountId, allowNotifications = false)
-            is MoodleResult.Failure -> showError(result.error.message)
+            is MoodleResult.Success -> when (val messages = moodleRepository.syncMessages(accountId, allowNotifications = false)) {
+                is MoodleResult.Success -> Unit
+                is MoodleResult.Failure -> handleAccountFailure(accountId, messages.error)
+            }
+            is MoodleResult.Failure -> handleAccountFailure(accountId, result.error)
         }
     }
 
     fun refreshCourse(accountId: String, courseId: Long) = launchBusy {
         when (val result = moodleRepository.refreshCourse(accountId, courseId)) {
             is MoodleResult.Success -> Unit
-            is MoodleResult.Failure -> showError(result.error.message)
+            is MoodleResult.Failure -> handleAccountFailure(accountId, result.error)
         }
     }
 
@@ -159,14 +172,14 @@ class AppViewModel @Inject constructor(
                 val assignment = result.value.firstOrNull { it.id == selectedId }
                 if (assignment != null) loadSubmissionStatus(accountId, assignment.id)
             }
-            is MoodleResult.Failure -> showError(result.error.message)
+            is MoodleResult.Failure -> handleAccountFailure(accountId, result.error)
         }
     }
 
     fun loadSubmissionStatus(accountId: String, assignmentId: Long) = viewModelScope.launch {
         when (val result = moodleRepository.submissionStatus(accountId, assignmentId)) {
             is MoodleResult.Success -> _uiState.value = _uiState.value.copy(submissionStatus = result.value)
-            is MoodleResult.Failure -> showError(result.error.message)
+            is MoodleResult.Failure -> handleAccountFailure(accountId, result.error)
         }
     }
 
@@ -174,7 +187,7 @@ class AppViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(moduleContent = null, moduleContentModuleId = module.id)
         when (val result = moodleRepository.moduleContent(accountId, module)) {
             is MoodleResult.Success -> _uiState.value = _uiState.value.copy(moduleContent = result.value)
-            is MoodleResult.Failure -> showError(result.error.message)
+            is MoodleResult.Failure -> handleAccountFailure(accountId, result.error)
         }
     }
 
@@ -186,13 +199,15 @@ class AppViewModel @Inject constructor(
     ) = launchBusy {
         when (val result = moodleRepository.submitAssignment(accountId, assignment, text, fileUri)) {
             is MoodleResult.Success -> loadSubmissionStatus(accountId, assignment.id)
-            is MoodleResult.Failure -> showError(result.error.message)
+            is MoodleResult.Failure -> handleAccountFailure(accountId, result.error)
         }
     }
 
     fun markNotificationRead(accountId: String, notification: MoodleNotification) = viewModelScope.launch {
-        moodleRepository.markNotificationRead(accountId, notification.id)
-        notification.contextUrl?.let { openAuthenticatedUrl(accountId, it) }
+        when (val result = moodleRepository.markNotificationRead(accountId, notification.id)) {
+            is MoodleResult.Success -> notification.contextUrl?.let { openAuthenticatedUrl(accountId, it) }
+            is MoodleResult.Failure -> handleAccountFailure(accountId, result.error)
+        }
     }
 
     fun openAuthenticatedUrl(accountId: String, url: String) = viewModelScope.launch {
@@ -202,7 +217,7 @@ class AppViewModel @Inject constructor(
     fun download(accountId: String, file: MoodleFile) = launchBusy {
         when (val result = moodleRepository.cacheFile(accountId, file)) {
             is MoodleResult.Success -> _events.send(AppEvent.OpenFile(result.value, file.mimeType))
-            is MoodleResult.Failure -> showError(result.error.message)
+            is MoodleResult.Failure -> handleAccountFailure(accountId, result.error)
         }
     }
 
@@ -220,7 +235,7 @@ class AppViewModel @Inject constructor(
     fun refreshConversations(accountId: String, offset: Int = 0) = launchBusy {
         when (val result = moodleRepository.refreshConversations(accountId, offset)) {
             is MoodleResult.Success -> Unit
-            is MoodleResult.Failure -> showError(result.error.message)
+            is MoodleResult.Failure -> handleAccountFailure(accountId, result.error)
         }
     }
 
@@ -228,9 +243,14 @@ class AppViewModel @Inject constructor(
         if (offset == 0) _uiState.value = _uiState.value.copy(busy = true, error = null)
         when (val result = moodleRepository.refreshMessages(accountId, conversationId, offset)) {
             is MoodleResult.Success -> {
-                if (offset == 0) moodleRepository.markConversationRead(accountId, conversationId)
+                if (offset == 0) {
+                    when (val read = moodleRepository.markConversationRead(accountId, conversationId)) {
+                        is MoodleResult.Success -> Unit
+                        is MoodleResult.Failure -> handleAccountFailure(accountId, read.error)
+                    }
+                }
             }
-            is MoodleResult.Failure -> showError(result.error.message)
+            is MoodleResult.Failure -> handleAccountFailure(accountId, result.error)
         }
         if (offset == 0) _uiState.value = _uiState.value.copy(busy = false)
     }
@@ -251,7 +271,7 @@ class AppViewModel @Inject constructor(
                 )
                 is MoodleResult.Failure -> {
                     _uiState.value = _uiState.value.copy(messageSearchBusy = false)
-                    showError(result.error.message)
+                    handleAccountFailure(accountId, result.error)
                 }
             }
         }
@@ -263,9 +283,10 @@ class AppViewModel @Inject constructor(
             is MoodleResult.Success -> _uiState.value = _uiState.value.copy(
                 messageSendState = MessageSendState.Sent(conversationId),
             )
-            is MoodleResult.Failure -> _uiState.value = _uiState.value.copy(
-                messageSendState = MessageSendState.Failed(result.error.message),
-            )
+            is MoodleResult.Failure -> {
+                _uiState.value = _uiState.value.copy(messageSendState = MessageSendState.Failed(result.error.message))
+                handleAccountFailure(accountId, result.error)
+            }
         }
     }
 
@@ -276,9 +297,10 @@ class AppViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(messageSendState = MessageSendState.Sent(result.value))
                 _events.send(AppEvent.OpenConversation(accountId, result.value))
             }
-            is MoodleResult.Failure -> _uiState.value = _uiState.value.copy(
-                messageSendState = MessageSendState.Failed(result.error.message),
-            )
+            is MoodleResult.Failure -> {
+                _uiState.value = _uiState.value.copy(messageSendState = MessageSendState.Failed(result.error.message))
+                handleAccountFailure(accountId, result.error)
+            }
         }
     }
 
@@ -313,5 +335,15 @@ class AppViewModel @Inject constructor(
 
     private fun showError(message: String) {
         _uiState.value = _uiState.value.copy(error = message)
+    }
+
+    private suspend fun handleAccountFailure(accountId: String, error: org.moodle.core.model.MoodleError) {
+        if (error.requiresReauthentication) {
+            authRepository.requireReauthentication(accountId)
+            _uiState.value = _uiState.value.copy(error = null, messageSendState = MessageSendState.Idle)
+            _events.send(AppEvent.RequireLogin(accountId))
+        } else {
+            showError(error.message)
+        }
     }
 }

@@ -297,7 +297,7 @@ final class DefaultMoodleRepository: MoodleRepository {
         guard !text.isEmpty, text.count <= 4_096 else { throw MoodleError(code: "invalid_message", message: String(localized: "error.message.invalid"), isRecoverable: false) }; return text
     }
     private func markExpiredIfNeeded(account: inout SiteAccount, error: MoodleError) throws {
-        if ["session_expired", "invalidtoken", "requireloginerror"].contains(error.code) { account.authenticationState = .reauthenticationRequired; try store.saveAccount(account) }
+        if error.requiresReauthentication { account.authenticationState = .reauthenticationRequired; try store.saveAccount(account) }
     }
 }
 

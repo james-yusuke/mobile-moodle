@@ -2,10 +2,11 @@ import Foundation
 
 @MainActor
 enum UITestSeeder {
-    static func seed(store: MoodleStore) throws {
+    static func seed(store: MoodleStore, authenticationState: AuthenticationState = .authenticated) throws {
         let account = SiteAccount(id: "ui-test-account", baseURL: URL(string: "https://example.invalid/moodle")!, siteName: "Sample University",
                                   username: "student", userID: 42, fullName: "Moodle Student", connectionMode: .nativeApi,
                                   capabilities: SiteCapabilities(functions: ["core_enrol_get_users_courses", "core_course_get_contents", "core_message_get_conversations", "core_message_get_conversation_messages", "core_message_send_messages_to_conversation", "core_message_message_search_users", "core_message_send_instant_messages", "core_calendar_get_calendar_upcoming_view"]),
+                                  authenticationState: authenticationState,
                                   lastSync: Date(), isActive: true)
         try store.saveAccount(account); try store.activateAccount(account.id)
         try store.replaceCourses([

@@ -124,8 +124,8 @@ class DefaultMoodleRepository @Inject constructor(
             dao.upsertAccount(
                 account.copy(authState = AuthState.Authenticated, lastSyncEpochSeconds = nowEpochSeconds()).toEntity(gson),
             )
-        } catch (error: HtmlMoodleException) {
-            if (error.code == "session_expired") {
+        } catch (error: Throwable) {
+            if (error.asMoodleError().requiresReauthentication) {
                 dao.upsertAccount(account.copy(authState = AuthState.ReauthenticationRequired).toEntity(gson))
             }
             throw error
@@ -135,24 +135,33 @@ class DefaultMoodleRepository @Inject constructor(
     override suspend fun syncMessages(accountId: String, allowNotifications: Boolean): MoodleResult<Unit> = safely {
         val account = account(accountId)
         if (!account.capabilities.messages.canList) return@safely
-        val initialMessageCache = dao.getMessageSyncInitialized(account.id) != true
-        val conversations = fetchConversations(account, 0, MESSAGE_CONVERSATION_PAGE_SIZE)
-        storeConversations(account, conversations, replace = true)
-        conversations.asSequence()
-            .filter { it.unreadCount > 0 }
-            .take(MAX_BACKGROUND_CONVERSATIONS)
-            .forEach { conversation ->
-                runCatching {
-                    val messages = fetchMessages(account, conversation.id, 0, MESSAGE_PAGE_SIZE)
-                    storeMessages(
-                        account,
-                        conversation.id,
-                        messages,
-                        suppressNotifications = initialMessageCache || !allowNotifications,
-                    )
+        try {
+            val initialMessageCache = dao.getMessageSyncInitialized(account.id) != true
+            val conversations = fetchConversations(account, 0, MESSAGE_CONVERSATION_PAGE_SIZE)
+            storeConversations(account, conversations, replace = true)
+            conversations.asSequence()
+                .filter { it.unreadCount > 0 }
+                .take(MAX_BACKGROUND_CONVERSATIONS)
+                .forEach { conversation ->
+                    try {
+                        val messages = fetchMessages(account, conversation.id, 0, MESSAGE_PAGE_SIZE)
+                        storeMessages(
+                            account,
+                            conversation.id,
+                            messages,
+                            suppressNotifications = initialMessageCache || !allowNotifications,
+                        )
+                    } catch (error: Throwable) {
+                        if (error.asMoodleError().requiresReauthentication) throw error
+                    }
                 }
+            dao.upsertMessageSyncState(MessageSyncStateEntity(account.id, true, nowEpochSeconds()))
+        } catch (error: Throwable) {
+            if (error.asMoodleError().requiresReauthentication) {
+                dao.upsertAccount(account.copy(authState = AuthState.ReauthenticationRequired).toEntity(gson))
             }
-        dao.upsertMessageSyncState(MessageSyncStateEntity(account.id, true, nowEpochSeconds()))
+            throw error
+        }
     }
 
     override suspend fun refreshConversations(
@@ -229,7 +238,6 @@ class DefaultMoodleRepository @Inject constructor(
         runCatching {
             storeConversations(account, fetchConversations(account, 0, MESSAGE_CONVERSATION_PAGE_SIZE), replace = true)
         }
-        Unit
     }
 
     override suspend fun startConversation(

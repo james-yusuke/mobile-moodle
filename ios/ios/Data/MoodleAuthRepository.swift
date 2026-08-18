@@ -10,6 +10,7 @@ protocol MoodleAuthRepository: AnyObject {
     func beginSSO(config: MoodlePublicConfig) throws -> URL
     func completeSSO(callback: URL) async throws -> SiteAccount
     func activate(accountID: String) throws
+    func requireReauthentication(accountID: String) throws
     func remove(accountID: String) throws
 }
 
@@ -82,6 +83,13 @@ final class DefaultMoodleAuthRepository: MoodleAuthRepository {
     }
 
     func activate(accountID: String) throws { try store.activateAccount(accountID) }
+
+    func requireReauthentication(accountID: String) throws {
+        guard var account = try store.account(id: accountID) else { return }
+        account.authenticationState = .reauthenticationRequired
+        try store.saveAccount(account)
+        try store.activateAccount(accountID)
+    }
 
     func remove(accountID: String) throws {
         if try store.account(id: accountID)?.connectionMode == .nativeHtml { html.clear(accountID: accountID) }

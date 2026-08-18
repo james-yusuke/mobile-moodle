@@ -4,6 +4,41 @@ import XCTest
 
 @MainActor
 final class MoodleCoreTests: XCTestCase {
+    func testAuthenticationErrorsRequireLogin() {
+        let authenticationCodes = [
+            "session_expired",
+            "invalidtoken",
+            "requireloginerror",
+            "invalidsesskey",
+            "sessionipnomatch",
+            "session_context_missing",
+        ]
+        for code in authenticationCodes {
+            XCTAssertTrue(MoodleError(code: code, message: "Expired").requiresReauthentication, code)
+        }
+        XCTAssertFalse(MoodleError(code: "network_error", message: "Offline").requiresReauthentication)
+        XCTAssertFalse(MoodleError(code: "nopermissions", message: "Forbidden").requiresReauthentication)
+    }
+
+    func testReauthenticationRequirementIsPersistedAndActivated() throws {
+        let environment = try AppEnvironment(inMemory: true)
+        let account = SiteAccount(
+            id: "expired-account",
+            baseURL: URL(string: "https://example.invalid/moodle")!,
+            siteName: "Example Campus",
+            connectionMode: .nativeApi
+        )
+        try environment.store.saveAccount(account)
+
+        try environment.auth.requireReauthentication(accountID: account.id)
+
+        XCTAssertEqual(try environment.auth.activeAccount()?.id, account.id)
+        XCTAssertEqual(
+            try environment.store.account(id: account.id)?.authenticationState,
+            .reauthenticationRequired
+        )
+    }
+
     func testURLNormalizationAcceptsLoginAndSubdirectoryURLs() throws {
         XCTAssertEqual(
             try MoodleURL.normalize("  EXAMPLE.invalid/campus/login/index.php?return=1 ").absoluteString,

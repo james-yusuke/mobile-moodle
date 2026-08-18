@@ -188,7 +188,12 @@ final class AppModel {
         do {
             try await environment.repository.sendMessage(accountID: account.id, conversationID: conversationID, text: text)
             snapshot = try environment.repository.snapshot(accountID: account.id); messageSendState = .sent(conversationID: conversationID); return true
-        } catch { messageSendState = .failed(error.localizedDescription); try? environment.repository.saveDraft(accountID: account.id, key: conversationDraftKey(conversationID), body: text); return false }
+        } catch {
+            messageSendState = .failed(error.localizedDescription)
+            try? environment.repository.saveDraft(accountID: account.id, key: conversationDraftKey(conversationID), body: text)
+            show(error)
+            return false
+        }
     }
 
     func startConversation(userID: Int64, text: String) async -> Int64? {
@@ -197,7 +202,12 @@ final class AppModel {
         do {
             let id = try await environment.repository.startConversation(accountID: account.id, userID: userID, text: text)
             snapshot = try environment.repository.snapshot(accountID: account.id); messageSendState = .sent(conversationID: id); return id
-        } catch { messageSendState = .failed(error.localizedDescription); try? environment.repository.saveDraft(accountID: account.id, key: userDraftKey(userID), body: text); return nil }
+        } catch {
+            messageSendState = .failed(error.localizedDescription)
+            try? environment.repository.saveDraft(accountID: account.id, key: userDraftKey(userID), body: text)
+            show(error)
+            return nil
+        }
     }
 
     func draft(key: String) -> String { guard let account = activeAccount else { return "" }; return (try? environment.repository.draft(accountID: account.id, key: key)?.body) ?? "" }
@@ -232,5 +242,16 @@ final class AppModel {
         isLoading = false
     }
 
-    private func show(_ error: Error) { errorMessage = error.localizedDescription }
+    private func show(_ error: Error) {
+        if let moodleError = error as? MoodleError,
+           moodleError.requiresReauthentication,
+           let accountID = activeAccount?.id {
+            try? environment.auth.requireReauthentication(accountID: accountID)
+            path = NavigationPath()
+            errorMessage = nil
+            reloadAccounts()
+            return
+        }
+        errorMessage = error.localizedDescription
+    }
 }

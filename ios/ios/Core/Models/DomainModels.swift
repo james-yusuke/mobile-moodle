@@ -289,6 +289,17 @@ struct MoodleError: Error, LocalizedError, Equatable, Sendable {
 
     var errorDescription: String? { message }
 
+    var requiresReauthentication: Bool {
+        [
+            "session_expired",
+            "invalidtoken",
+            "requireloginerror",
+            "invalidsesskey",
+            "sessionipnomatch",
+            "session_context_missing",
+        ].contains(code.lowercased())
+    }
+
     static let offline = MoodleError(code: "offline", message: String(localized: "error.offline"))
     static let unsupported = MoodleError(code: "unsupported", message: String(localized: "error.unsupported"), isRecoverable: false)
 }

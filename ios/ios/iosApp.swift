@@ -16,7 +16,12 @@ struct MobileMoodleApp: App {
             let uiTesting = false
             #endif
             let environment = try AppEnvironment(inMemory: uiTesting)
-            if uiTesting { try UITestSeeder.seed(store: environment.store) }
+            if uiTesting {
+                let authenticationState: AuthenticationState = process.arguments.contains("--session-expired")
+                    ? .reauthenticationRequired
+                    : .authenticated
+                try UITestSeeder.seed(store: environment.store, authenticationState: authenticationState)
+            }
             let appModel = AppModel(environment: environment)
             if uiTesting { appModel.isOnline = false }
             _model = State(initialValue: appModel)

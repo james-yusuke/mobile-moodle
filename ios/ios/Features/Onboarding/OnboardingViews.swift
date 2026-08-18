@@ -56,6 +56,100 @@ struct AccountLandingView: View {
     }
 }
 
+struct ReauthenticationGateView: View {
+    @Environment(AppModel.self) private var model
+    let account: SiteAccount
+    @State private var username: String
+    @State private var password = ""
+    @FocusState private var passwordFocused: Bool
+
+    init(account: SiteAccount) {
+        self.account = account
+        _username = State(initialValue: account.username ?? "")
+    }
+
+    var body: some View {
+        PortalBackground {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    HStack(spacing: 14) {
+                        PortalBrandMark(size: 54)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("login.again").font(.title.bold())
+                            Text(account.siteName).font(.subheadline).foregroundStyle(.secondary).lineLimit(2)
+                        }
+                    }
+
+                    VStack(alignment: .leading, spacing: 18) {
+                        Label("error.session.expired", systemImage: "person.badge.key.fill")
+                            .font(.headline)
+                            .foregroundStyle(PortalTheme.teal)
+
+                        if let error = model.errorMessage {
+                            PortalErrorBanner(message: error) { model.errorMessage = nil }
+                        }
+
+                        HStack(spacing: 12) {
+                            Image(systemName: "person.fill").foregroundStyle(PortalTheme.teal).frame(width: 24)
+                            TextField("login.username", text: $username)
+                                .textContentType(.username)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+                        }
+                        .padding(14)
+                        .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))
+
+                        HStack(spacing: 12) {
+                            Image(systemName: "key.fill").foregroundStyle(PortalTheme.teal).frame(width: 24)
+                            SecureField("login.password", text: $password)
+                                .textContentType(.password)
+                                .focused($passwordFocused)
+                                .submitLabel(.go)
+                                .onSubmit(signIn)
+                        }
+                        .padding(14)
+                        .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))
+
+                        Button(action: signIn) {
+                            HStack {
+                                if model.isLoading { ProgressView().tint(.white) }
+                                Text("login.action")
+                                Spacer()
+                                Image(systemName: "arrow.right")
+                            }
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                            .frame(minHeight: 52)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.roundedRectangle(radius: 16))
+                        .tint(PortalTheme.teal)
+                        .disabled(model.isLoading || username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || password.isEmpty)
+
+                        Text("onboarding.secure.body")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(22)
+                    .portalCard()
+                }
+                .frame(maxWidth: 520)
+                .padding(24)
+                .frame(maxWidth: .infinity)
+            }
+        }
+        .onAppear { passwordFocused = username.isEmpty == false }
+        .accessibilityIdentifier("reauthentication.screen")
+    }
+
+    private func signIn() {
+        guard !username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, !password.isEmpty else { return }
+        let submittedPassword = password
+        password = ""
+        Task { await model.reauthenticate(username: username, password: submittedPassword) }
+    }
+}
+
 struct AddSiteView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss

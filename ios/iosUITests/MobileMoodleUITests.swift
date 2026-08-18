@@ -2,9 +2,9 @@ import XCTest
 
 @MainActor
 final class MobileMoodleUITests: XCTestCase {
-    private func launch(dark: Bool = false) -> XCUIApplication {
+    private func launch(dark: Bool = false, additionalArguments: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "-MobileMoodleUITesting", "YES", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["--ui-testing", "-MobileMoodleUITesting", "YES", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"] + additionalArguments
         app.launchEnvironment["MOBILE_MOODLE_UI_TESTING"] = "1"
         if dark {
             app.launchArguments.append("--dark-mode")
@@ -36,6 +36,13 @@ final class MobileMoodleUITests: XCTestCase {
         app.buttons["notifications.button"].tap()
         XCTAssertTrue(app.navigationBars["Notifications"].waitForExistence(timeout: 2))
         attachScreenshot(app, name: "dark-notifications")
+    }
+
+    func testExpiredSessionOpensReauthenticationScreen() {
+        let app = launch(additionalArguments: ["--session-expired"])
+        XCTAssertTrue(app.descendants(matching: .any)["reauthentication.screen"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Sign in again"].exists)
+        XCTAssertFalse(app.buttons["tab.home"].exists)
     }
 
     private func attachScreenshot(_ app: XCUIApplication, name: String) {
