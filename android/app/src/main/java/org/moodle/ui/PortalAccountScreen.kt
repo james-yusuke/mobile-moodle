@@ -23,11 +23,13 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -232,7 +234,10 @@ fun PortalAccountScreen(
             bottomBar = {
                 if (!wide) {
                     Box(
-                        Modifier.fillMaxWidth().padding(start = 14.dp, end = 14.dp, bottom = 10.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .navigationBarsPadding()
+                            .padding(start = 14.dp, end = 14.dp, bottom = 10.dp),
                         contentAlignment = Alignment.Center,
                     ) {
                         Surface(
@@ -244,6 +249,7 @@ fun PortalAccountScreen(
                             NavigationBar(
                                 containerColor = Color.Transparent,
                                 tonalElevation = 0.dp,
+                                windowInsets = WindowInsets(0, 0, 0, 0),
                                 modifier = Modifier.height(72.dp),
                             ) {
                                 primaryDestinations.forEach { destination ->

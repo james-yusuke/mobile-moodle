@@ -38,6 +38,17 @@ final class MobileMoodleUITests: XCTestCase {
         attachScreenshot(app, name: "dark-notifications")
     }
 
+    func testHomeHeroMetadataStaysInsideCard() {
+        let app = launch()
+        let hero = app.descendants(matching: .any)["home.hero"]
+        let metadata = app.descendants(matching: .any)["home.hero.metadata"]
+        XCTAssertTrue(hero.waitForExistence(timeout: 5))
+        XCTAssertTrue(metadata.exists)
+        XCTAssertGreaterThanOrEqual(metadata.frame.minX, hero.frame.minX + 20)
+        XCTAssertLessThanOrEqual(metadata.frame.maxY, hero.frame.maxY - 16)
+        attachScreenshot(app, name: "home-hero-alignment")
+    }
+
     func testExpiredSessionOpensReauthenticationScreen() {
         let app = launch(additionalArguments: ["--session-expired"])
         XCTAssertTrue(app.descendants(matching: .any)["reauthentication.screen"].waitForExistence(timeout: 5))

@@ -68,18 +68,38 @@ struct HomeView: View {
 private struct HomeHero: View {
     var account: SiteAccount?
     var body: some View {
-        ZStack(alignment: .bottomLeading) {
-            LinearGradient(colors: [PortalTheme.navy, PortalTheme.tealDark, Color(hex: 0x08766B)], startPoint: .topLeading, endPoint: .bottomTrailing)
-            Circle().stroke(Color.white.opacity(0.1), lineWidth: 34).frame(width: 220, height: 220).offset(x: 190, y: -70).accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 10) {
-                Text(greeting).font(.subheadline.weight(.semibold)).foregroundStyle(Color.white.opacity(0.75))
-                Text(account?.fullName ?? account?.username ?? String(localized: "home.welcome")).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(.white).lineLimit(2)
-                HStack(spacing: 8) {
-                    Label(account?.siteName ?? String(localized: "app.name"), systemImage: "building.columns.fill").lineLimit(1)
-                    if let date = account?.lastSync { Text("·"); Text(date, format: .relative(presentation: .named)) }
-                }.font(.caption).foregroundStyle(Color.white.opacity(0.72))
-            }.padding(24)
-        }.frame(maxWidth: .infinity).frame(height: 176).clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous)).shadow(color: PortalTheme.navy.opacity(0.2), radius: 22, y: 10)
+        VStack(alignment: .leading, spacing: 10) {
+            Text(greeting).font(.subheadline.weight(.semibold)).foregroundStyle(Color.white.opacity(0.75))
+            Text(account?.fullName ?? account?.username ?? String(localized: "home.welcome")).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(.white).lineLimit(2)
+            HStack(spacing: 8) {
+                Label(account?.siteName ?? String(localized: "app.name"), systemImage: "building.columns.fill").lineLimit(1)
+                if let date = account?.lastSync { Text("·"); Text(date, format: .relative(presentation: .named)) }
+            }
+            .font(.caption)
+            .foregroundStyle(Color.white.opacity(0.72))
+            .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("home.hero.metadata")
+        }
+        .padding(24)
+        .frame(maxWidth: .infinity, minHeight: 176, alignment: .bottomLeading)
+        .background(
+            LinearGradient(
+                colors: [PortalTheme.navy, PortalTheme.tealDark, Color(hex: 0x08766B)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .overlay(alignment: .topTrailing) {
+            Circle()
+                .stroke(Color.white.opacity(0.1), lineWidth: 34)
+                .frame(width: 220, height: 220)
+                .offset(x: 52, y: -84)
+                .accessibilityHidden(true)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+        .shadow(color: PortalTheme.navy.opacity(0.2), radius: 22, y: 10)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("home.hero")
     }
     private var greeting: LocalizedStringKey { let hour = Calendar.current.component(.hour, from: Date()); return hour < 12 ? "home.greeting.morning" : hour < 18 ? "home.greeting.afternoon" : "home.greeting.evening" }
 }
