@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,21 +37,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.AddComment
-import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Clear
-import androidx.compose.material.icons.outlined.CloudDone
 import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.School
 import androidx.compose.material.icons.outlined.Search
@@ -65,18 +63,13 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationRail
-import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -97,11 +90,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -121,7 +119,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-private enum class PortalDestination(val label: Int, val icon: ImageVector) {
+internal enum class PortalDestination(val label: Int, val icon: ImageVector) {
     Home(R.string.home, Icons.Outlined.Home),
     Courses(R.string.courses, Icons.Outlined.School),
     Messages(R.string.messages, Icons.Outlined.AddComment),
@@ -172,62 +170,77 @@ fun PortalAccountScreen(
                     title = {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
-                            if (wide) PortalBrandMark(38.dp)
-                            Column {
+                            PortalBrandMark(36.dp)
+                            Column(Modifier.weight(1f, fill = false)) {
                                 Text(
                                     account.siteName,
-                                    style = MaterialTheme.typography.titleMedium,
+                                    style = MaterialTheme.typography.labelLarge,
+                                    fontWeight = FontWeight.Bold,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                 )
-                                Text(
-                                    account.fullName ?: account.username.orEmpty(),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    maxLines = 1,
-                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(5.dp),
+                                ) {
+                                    Box(
+                                        Modifier.size(6.dp).clip(CircleShape).background(
+                                            if (online) MaterialTheme.colorScheme.primary
+                                            else MaterialTheme.colorScheme.tertiary,
+                                        ),
+                                    )
+                                    Text(
+                                        account.fullName ?: account.username.orEmpty(),
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                }
                             }
                         }
                     },
                     actions = {
-                        IconButton(onClick = { selected = PortalDestination.Notifications }) {
-                            BadgedBox(
-                                badge = {
-                                    val unread = notifications.count { !it.read }
-                                    if (unread > 0) Badge { Text(unread.coerceAtMost(99).toString()) }
-                                }
+                        Row(
+                            Modifier.padding(end = 10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(5.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Surface(
+                                onClick = { selected = PortalDestination.Notifications },
+                                modifier = Modifier.size(44.dp).testTag("notifications_button"),
+                                shape = CircleShape,
+                                color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.78f),
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.72f)),
                             ) {
-                                Icon(Icons.Outlined.Notifications, stringResource(R.string.notifications))
-                            }
-                        }
-                        IconButton(onClick = { viewModel.sync(account.id) }, enabled = online) {
-                            Icon(Icons.Outlined.Refresh, stringResource(R.string.sync))
-                        }
-                        Box {
-                            IconButton(onClick = { accountMenu = true }) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    InitialAvatar(account.fullName ?: account.username ?: account.siteName, 32.dp)
-                                    Icon(Icons.Outlined.ArrowDropDown, stringResource(R.string.account_menu))
+                                Box(contentAlignment = Alignment.Center) {
+                                    BadgedBox(
+                                        badge = {
+                                            val unread = notifications.count { !it.read }
+                                            if (unread > 0) Badge { Text(unread.coerceAtMost(99).toString()) }
+                                        },
+                                    ) {
+                                        Icon(Icons.Outlined.Notifications, stringResource(R.string.notifications))
+                                    }
                                 }
                             }
-                            DropdownMenu(expanded = accountMenu, onDismissRequest = { accountMenu = false }) {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.switch_site)) },
-                                    leadingIcon = { Icon(Icons.Outlined.SwapHoriz, null) },
-                                    onClick = { accountMenu = false; onSites() },
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.settings)) },
-                                    leadingIcon = { Icon(Icons.Outlined.Settings, null) },
-                                    onClick = { accountMenu = false; selected = PortalDestination.Settings },
-                                )
+                            Surface(
+                                onClick = { accountMenu = true },
+                                modifier = Modifier.size(44.dp).testTag("account_menu_button"),
+                                shape = CircleShape,
+                                color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.78f),
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.72f)),
+                            ) {
+                                Box(contentAlignment = Alignment.Center) {
+                                    InitialAvatar(account.fullName ?: account.username ?: account.siteName, 36.dp)
+                                }
                             }
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.96f),
+                        containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.92f),
                     ),
                 )
             },
@@ -237,41 +250,15 @@ fun PortalAccountScreen(
                         Modifier
                             .fillMaxWidth()
                             .navigationBarsPadding()
-                            .padding(start = 14.dp, end = 14.dp, bottom = 10.dp),
+                            .padding(start = 14.dp, end = 14.dp, bottom = 8.dp),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Surface(
-                            shape = RoundedCornerShape(28.dp),
-                            color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                            shadowElevation = 8.dp,
-                            tonalElevation = 2.dp,
-                        ) {
-                            NavigationBar(
-                                containerColor = Color.Transparent,
-                                tonalElevation = 0.dp,
-                                windowInsets = WindowInsets(0, 0, 0, 0),
-                                modifier = Modifier.height(72.dp),
-                            ) {
-                                primaryDestinations.forEach { destination ->
-                                    NavigationBarItem(
-                                        selected = selected == destination,
-                                        onClick = { selected = destination },
-                                        icon = {
-                                            if (destination == PortalDestination.Messages &&
-                                                conversations.any { it.unreadCount > 0 }
-                                            ) {
-                                                BadgedBox(badge = { Badge() }) {
-                                                    Icon(destination.icon, stringResource(destination.label))
-                                                }
-                                            } else {
-                                                Icon(destination.icon, stringResource(destination.label))
-                                            }
-                                        },
-                                        label = { Text(stringResource(destination.label)) },
-                                    )
-                                }
-                            }
-                        }
+                        PortalNavigationDock(
+                            destinations = primaryDestinations,
+                            selected = selected,
+                            unreadMessages = conversations.sumOf { it.unreadCount },
+                            onSelected = { selected = it },
+                        )
                     }
                 }
             },
@@ -279,22 +266,12 @@ fun PortalAccountScreen(
             PortalBackground(Modifier.padding(padding)) {
                 Row(Modifier.fillMaxSize()) {
                     if (wide) {
-                        NavigationRail(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.78f),
-                            header = {
-                                PortalBrandMark(44.dp)
-                                Spacer(Modifier.height(18.dp))
-                            },
-                        ) {
-                            primaryDestinations.forEach { destination ->
-                                NavigationRailItem(
-                                    selected = selected == destination,
-                                    onClick = { selected = destination },
-                                    icon = { Icon(destination.icon, stringResource(destination.label)) },
-                                    label = { Text(stringResource(destination.label)) },
-                                )
-                            }
-                        }
+                        PortalNavigationRail(
+                            destinations = primaryDestinations,
+                            selected = selected,
+                            unreadMessages = conversations.sumOf { it.unreadCount },
+                            onSelected = { selected = it },
+                        )
                         VerticalDivider(Modifier.fillMaxHeight(), color = MaterialTheme.colorScheme.outlineVariant)
                     }
                     Column(Modifier.weight(1f).fillMaxHeight()) {
@@ -383,6 +360,271 @@ fun PortalAccountScreen(
                     }
                 }
             }
+        }
+    }
+    if (accountMenu) {
+        ModalBottomSheet(
+            onDismissRequest = { accountMenu = false },
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
+            dragHandle = {
+                Surface(
+                    Modifier.padding(top = 12.dp, bottom = 8.dp).size(width = 42.dp, height = 5.dp),
+                    shape = CircleShape,
+                    color = MaterialTheme.colorScheme.outlineVariant,
+                ) {}
+            },
+        ) {
+            PortalAccountPanel(
+                account = account,
+                onSites = {
+                    accountMenu = false
+                    onSites()
+                },
+                onSettings = {
+                    accountMenu = false
+                    selected = PortalDestination.Settings
+                },
+            )
+        }
+    }
+}
+
+@Composable
+internal fun PortalNavigationDock(
+    destinations: List<PortalDestination>,
+    selected: PortalDestination,
+    unreadMessages: Int,
+    onSelected: (PortalDestination) -> Unit,
+) {
+    Surface(
+        Modifier.fillMaxWidth().testTag("portal_navigation_dock"),
+        shape = RoundedCornerShape(25.dp),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.96f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.66f)),
+        shadowElevation = 14.dp,
+        tonalElevation = 2.dp,
+    ) {
+        Row(
+            Modifier.fillMaxWidth().padding(6.dp),
+            horizontalArrangement = Arrangement.spacedBy(3.dp),
+        ) {
+            destinations.forEach { destination ->
+                PortalNavigationItem(
+                    destination = destination,
+                    selected = selected == destination,
+                    showBadge = destination == PortalDestination.Messages && unreadMessages > 0,
+                    onClick = { onSelected(destination) },
+                    modifier = Modifier.weight(1f),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PortalNavigationRail(
+    destinations: List<PortalDestination>,
+    selected: PortalDestination,
+    unreadMessages: Int,
+    onSelected: (PortalDestination) -> Unit,
+) {
+    Surface(
+        modifier = Modifier.fillMaxHeight().width(92.dp),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.88f),
+        tonalElevation = 2.dp,
+    ) {
+        Column(
+            Modifier.fillMaxHeight().padding(horizontal = 9.dp, vertical = 18.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            PortalBrandMark(48.dp)
+            Spacer(Modifier.height(8.dp))
+            destinations.forEach { destination ->
+                PortalNavigationItem(
+                    destination = destination,
+                    selected = selected == destination,
+                    showBadge = destination == PortalDestination.Messages && unreadMessages > 0,
+                    onClick = { onSelected(destination) },
+                    modifier = Modifier.fillMaxWidth(),
+                    rail = true,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PortalNavigationItem(
+    destination: PortalDestination,
+    selected: Boolean,
+    showBadge: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier,
+    rail: Boolean = false,
+) {
+    val tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+    Column(
+        modifier
+            .heightIn(min = if (rail) 62.dp else 56.dp)
+            .clip(RoundedCornerShape(if (rail) 17.dp else 16.dp))
+            .background(if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.11f) else Color.Transparent)
+            .selectable(selected = selected, role = Role.Tab, onClick = onClick)
+            .testTag("portal_tab_${destination.name.lowercase()}")
+            .padding(horizontal = 4.dp, vertical = 7.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        BadgedBox(
+            badge = {
+                if (showBadge) Badge(containerColor = MaterialTheme.colorScheme.error)
+            },
+        ) {
+            Icon(
+                destination.icon,
+                stringResource(destination.label),
+                Modifier.size(if (rail) 21.dp else 20.dp),
+                tint = tint,
+            )
+        }
+        Spacer(Modifier.height(3.dp))
+        Text(
+            stringResource(destination.label),
+            style = MaterialTheme.typography.labelSmall,
+            color = tint,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+            maxLines = 1,
+        )
+    }
+}
+
+@Composable
+internal fun PortalAccountPanel(
+    account: SiteAccount,
+    onSites: () -> Unit,
+    onSettings: () -> Unit,
+) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .navigationBarsPadding()
+            .padding(start = 20.dp, end = 20.dp, bottom = 24.dp)
+            .testTag("account_panel"),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(24.dp))
+                .background(Brush.linearGradient(listOf(PortalNavy, PortalTealDark, Color(0xFF08766B))))
+                .drawBehind {
+                    drawCircle(
+                        color = Color.White.copy(alpha = 0.09f),
+                        radius = size.minDimension * 0.72f,
+                        center = Offset(size.width * 0.95f, size.height * 0.05f),
+                        style = Stroke(width = size.minDimension * 0.18f),
+                    )
+                }
+                .padding(20.dp),
+        ) {
+            Row(
+                Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
+            ) {
+                InitialAvatar(account.fullName ?: account.username ?: account.siteName, 56.dp)
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                    Text(
+                        account.fullName ?: account.username ?: stringResource(R.string.active_account),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = Color.White,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Text(
+                        account.siteName,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.White.copy(alpha = 0.76f),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Text(
+                        if (account.connectionMode == ConnectionMode.NativeApi) "Native API"
+                        else stringResource(R.string.html_mode),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color(0xFF9EE3D6),
+                    )
+                }
+            }
+        }
+        PortalAccountAction(
+            icon = Icons.Outlined.SwapHoriz,
+            title = stringResource(R.string.switch_site),
+            supporting = stringResource(R.string.switch_site_supporting),
+            onClick = onSites,
+            testTag = "account_panel_sites",
+        )
+        PortalAccountAction(
+            icon = Icons.Outlined.Settings,
+            title = stringResource(R.string.settings),
+            supporting = stringResource(R.string.settings_supporting),
+            onClick = onSettings,
+            testTag = "account_panel_settings",
+        )
+        Row(
+            Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Icon(Icons.Outlined.Security, null, Modifier.size(15.dp), tint = MaterialTheme.colorScheme.primary)
+            Text(
+                stringResource(R.string.secure_connection_body),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+            )
+        }
+    }
+}
+
+@Composable
+private fun PortalAccountAction(
+    icon: ImageVector,
+    title: String,
+    supporting: String,
+    onClick: () -> Unit,
+    testTag: String,
+) {
+    Surface(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 68.dp)
+            .testTag(testTag),
+        shape = RoundedCornerShape(18.dp),
+        color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.7f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.72f)),
+    ) {
+        Row(
+            Modifier.fillMaxWidth().padding(horizontal = 15.dp, vertical = 13.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(13.dp),
+        ) {
+            Surface(shape = RoundedCornerShape(13.dp), color = MaterialTheme.colorScheme.primaryContainer) {
+                Icon(icon, null, Modifier.padding(10.dp).size(20.dp), tint = MaterialTheme.colorScheme.primary)
+            }
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text(title, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    supporting,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                )
+            }
+            Icon(Icons.Outlined.ChevronRight, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
@@ -504,26 +746,41 @@ private fun PortalHomeScreen(
 
 @Composable
 private fun PortalHomeHero(account: SiteAccount) {
+    val greeting = when (java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)) {
+        in 0..11 -> R.string.greeting_morning
+        in 12..17 -> R.string.greeting_afternoon
+        else -> R.string.greeting_evening
+    }
     Surface(
         shape = MaterialTheme.shapes.large,
         color = Color.Transparent,
-        shadowElevation = 6.dp,
+        shadowElevation = 10.dp,
     ) {
         Box(
-            Modifier.fillMaxWidth().background(
-                Brush.linearGradient(listOf(PortalNavy, PortalTealDark, Color(0xFF08766B))),
-            ),
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = 176.dp)
+                .background(Brush.linearGradient(listOf(PortalNavy, PortalTealDark, Color(0xFF08766B))))
+                .drawBehind {
+                    drawCircle(
+                        color = Color.White.copy(alpha = 0.09f),
+                        radius = size.minDimension * 0.58f,
+                        center = Offset(size.width * 0.88f, size.height * 0.02f),
+                        style = Stroke(width = size.minDimension * 0.16f),
+                    )
+                    drawCircle(
+                        color = PortalGold.copy(alpha = 0.24f),
+                        radius = size.minDimension * 0.1f,
+                        center = Offset(size.width * 0.91f, size.height * 0.78f),
+                    )
+                },
         ) {
-            Box(
-                Modifier.align(Alignment.TopEnd).size(142.dp).clip(CircleShape)
-                    .background(Color.White.copy(alpha = 0.055f)),
-            )
             Column(
-                Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 22.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp),
+                Modifier.align(Alignment.BottomStart).fillMaxWidth().padding(horizontal = 24.dp, vertical = 22.dp),
+                verticalArrangement = Arrangement.spacedBy(7.dp),
             ) {
                 Text(
-                    stringResource(R.string.welcome_back),
+                    stringResource(greeting),
                     style = MaterialTheme.typography.labelMedium,
                     color = Color(0xFF9EE3D6),
                     fontWeight = FontWeight.Bold,
@@ -535,19 +792,27 @@ private fun PortalHomeHero(account: SiteAccount) {
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
-                Text(
-                    account.siteName,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White.copy(alpha = 0.76f),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Spacer(Modifier.height(10.dp))
-                PortalStatusPill(
-                    account.lastSyncEpochSeconds?.let { stringResource(R.string.last_sync, portalDate(it)) }
-                        ?: stringResource(R.string.never_synced),
-                    icon = Icons.Outlined.CloudDone,
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(7.dp),
+                ) {
+                    Icon(Icons.Outlined.School, null, Modifier.size(15.dp), tint = Color.White.copy(alpha = 0.72f))
+                    Text(
+                        account.siteName,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White.copy(alpha = 0.72f),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Text("·", color = Color.White.copy(alpha = 0.52f))
+                    Text(
+                        account.lastSyncEpochSeconds?.let { stringResource(R.string.last_sync, portalDate(it)) }
+                            ?: stringResource(R.string.never_synced),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White.copy(alpha = 0.72f),
+                        maxLines = 1,
+                    )
+                }
             }
         }
     }

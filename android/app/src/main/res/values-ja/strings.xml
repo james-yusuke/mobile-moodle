@@ -28,6 +28,8 @@
     <string name="settings">設定</string>
     <string name="sync">同期</string>
     <string name="switch_site">サイト</string>
+    <string name="switch_site_supporting">Moodleサイトや接続済みアカウントを切り替えます。</string>
+    <string name="settings_supporting">通知、プライバシー、アカウント設定を管理します。</string>
     <string name="remove_account">アカウントを削除</string>
     <string name="remove_account_confirm">このアカウントと端末内のキャッシュを削除しますか？</string>
     <string name="cancel">キャンセル</string>
@@ -38,6 +40,9 @@
     <string name="empty_notifications">通知はありません。</string>
     <string name="cached_data">通信できない時も、最後に取得したデータを閲覧できます。</string>
     <string name="welcome_back">学習ダッシュボード</string>
+    <string name="greeting_morning">おはようございます</string>
+    <string name="greeting_afternoon">こんにちは</string>
+    <string name="greeting_evening">こんばんは</string>
     <string name="unread_updates">未読の更新</string>
     <string name="last_sync">最終同期: %1$s</string>
     <string name="never_synced">まだ同期していません</string>

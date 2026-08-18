@@ -13,8 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -23,9 +23,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.luminance
@@ -106,24 +108,40 @@ internal fun PortalBackground(
                 ),
             ),
     ) {
+        Canvas(Modifier.fillMaxSize().clearAndSetSemantics {}) {
+            drawCircle(
+                color = colors.primary.copy(alpha = if (colors.background.luminance() < 0.5f) 0.11f else 0.065f),
+                radius = size.maxDimension * 0.62f,
+                center = Offset(size.width * 1.02f, size.height * 0.02f),
+            )
+        }
         content()
     }
 }
 
 @Composable
 internal fun PortalBrandMark(size: Dp = 42.dp) {
-    Surface(
-        modifier = Modifier.size(size),
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
-        shadowElevation = 3.dp,
+    val shape = RoundedCornerShape(size * 0.3f)
+    Box(
+        Modifier
+            .size(size)
+            .shadow(5.dp, shape)
+            .clip(shape)
+            .background(Brush.linearGradient(listOf(PortalTeal, PortalTealDark))),
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            Icon(
-                Icons.Outlined.AutoAwesome,
-                contentDescription = null,
-                modifier = Modifier.size(size * 0.5f).clearAndSetSemantics {},
+        Canvas(Modifier.fillMaxSize().clearAndSetSemantics {}) {
+            val diamond = Path().apply {
+                moveTo(this@Canvas.size.width * 0.24f, this@Canvas.size.height * 0.55f)
+                lineTo(this@Canvas.size.width * 0.5f, this@Canvas.size.height * 0.35f)
+                lineTo(this@Canvas.size.width * 0.76f, this@Canvas.size.height * 0.55f)
+                lineTo(this@Canvas.size.width * 0.5f, this@Canvas.size.height * 0.7f)
+                close()
+            }
+            drawPath(diamond, Color.White)
+            drawCircle(
+                color = PortalGold,
+                radius = this@Canvas.size.minDimension * 0.065f,
+                center = Offset(this@Canvas.size.width * 0.76f, this@Canvas.size.height * 0.24f),
             )
         }
     }
