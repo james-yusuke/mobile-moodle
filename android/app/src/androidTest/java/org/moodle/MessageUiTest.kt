@@ -1,14 +1,20 @@
 package org.moodle
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.test.assertHeightIsAtLeast
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Rule
 import org.junit.Test
 import org.moodle.core.model.ConnectionMode
 import org.moodle.core.model.ConversationType
+import org.moodle.core.model.MessageSendState
 import org.moodle.core.model.MoodleConversation
 import org.moodle.core.model.MoodleConversationMember
 import org.moodle.core.model.MoodleMessage
@@ -16,6 +22,7 @@ import org.moodle.core.model.SiteAccount
 import org.moodle.core.model.SiteCapabilities
 import org.moodle.ui.MessageListScreen
 import org.moodle.ui.MessageBubble
+import org.moodle.ui.MessageComposer
 import org.moodle.ui.MessageDateSeparator
 import org.moodle.ui.MoodleTheme
 import java.text.DateFormat
@@ -98,5 +105,24 @@ class MessageUiTest {
         composeRule.onNodeWithText(
             DateFormat.getDateInstance(DateFormat.MEDIUM).format(Date(createdAt * 1_000L)),
         ).assertExists()
+    }
+
+    @Test
+    fun composerKeepsComfortableTouchTargetsAndClearDisabledState() {
+        composeRule.setContent {
+            MoodleTheme {
+                MessageComposer(
+                    body = "",
+                    onBodyChanged = {},
+                    enabled = true,
+                    sendState = MessageSendState.Idle,
+                    onSend = {},
+                )
+            }
+        }
+
+        composeRule.onNodeWithTag("message_composer").assertIsDisplayed()
+        composeRule.onNodeWithTag("message_input").assertHeightIsAtLeast(52.dp)
+        composeRule.onNodeWithTag("message_send").assertHeightIsAtLeast(48.dp).assertIsNotEnabled()
     }
 }

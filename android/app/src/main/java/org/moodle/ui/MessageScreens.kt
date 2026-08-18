@@ -11,9 +11,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
@@ -47,6 +50,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -65,6 +69,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -303,7 +308,9 @@ fun ConversationScreen(
     DisposableEffect(Unit) { onDispose(viewModel::resetMessageComposer) }
 
     Scaffold(
+        modifier = Modifier.fillMaxSize().imePadding(),
         containerColor = Color.Transparent,
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             TopAppBar(
                 title = {
@@ -344,8 +351,8 @@ fun ConversationScreen(
             LazyColumn(
                 state = listState,
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(7.dp),
+                contentPadding = PaddingValues(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 18.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 if (messages.size >= 50) {
                     item {
@@ -370,8 +377,13 @@ fun ConversationScreen(
 
 @Composable
 internal fun MessageBubble(message: MoodleMessage) {
-    BoxWithConstraints(Modifier.fillMaxWidth()) {
-        val bubbleMaxWidth = maxWidth * 0.82f
+    BoxWithConstraints(
+        Modifier
+            .fillMaxWidth()
+            .padding(vertical = 2.dp)
+            .testTag("message_bubble_${message.id}"),
+    ) {
+        val bubbleMaxWidth = maxWidth * 0.8f
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = if (message.isMine) Arrangement.End else Arrangement.Start,
@@ -383,24 +395,32 @@ internal fun MessageBubble(message: MoodleMessage) {
                 if (!message.isMine) {
                     Text(
                         message.senderName,
-                        Modifier.padding(horizontal = 10.dp, vertical = 3.dp),
+                        Modifier.padding(start = 12.dp, end = 12.dp, bottom = 5.dp),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
                 Surface(
                     modifier = Modifier.animateContentSize(),
                     shape = if (message.isMine) {
-                        RoundedCornerShape(20.dp, 20.dp, 5.dp, 20.dp)
+                        RoundedCornerShape(22.dp, 22.dp, 7.dp, 22.dp)
                     } else {
-                        RoundedCornerShape(20.dp, 20.dp, 20.dp, 5.dp)
+                        RoundedCornerShape(22.dp, 22.dp, 22.dp, 7.dp)
                     },
-                    color = if (message.isMine) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+                    color = if (message.isMine) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.78f)
+                    },
                     contentColor = if (message.isMine) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
-                    border = if (message.isMine) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                    shadowElevation = if (message.isMine) 1.dp else 0.dp,
+                    border = if (message.isMine) null else BorderStroke(
+                        0.75.dp,
+                        MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.82f),
+                    ),
+                    shadowElevation = if (message.isMine) 1.dp else 0.5.dp,
                 ) {
-                    Column(Modifier.padding(horizontal = 15.dp, vertical = 11.dp)) {
+                    Column(Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
                         Text(
                             if (message.bodyHtml.isNotBlank()) {
                                 AnnotatedString.fromHtml(
@@ -419,7 +439,7 @@ internal fun MessageBubble(message: MoodleMessage) {
                             style = MaterialTheme.typography.labelSmall,
                             color = if (message.isMine) MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.72f)
                             else MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.align(Alignment.End).padding(top = 3.dp),
+                            modifier = Modifier.align(Alignment.End).padding(top = 5.dp),
                         )
                     }
                 }
@@ -442,7 +462,7 @@ internal fun MessageDateSeparator(epochSeconds: Long) {
 }
 
 @Composable
-private fun MessageComposer(
+internal fun MessageComposer(
     body: String,
     onBodyChanged: (String) -> Unit,
     enabled: Boolean,
@@ -451,50 +471,78 @@ private fun MessageComposer(
 ) {
     Surface(
         color = MaterialTheme.colorScheme.surface,
-        shadowElevation = 12.dp,
-        tonalElevation = 2.dp,
+        shadowElevation = 8.dp,
+        tonalElevation = 3.dp,
+        modifier = Modifier.fillMaxWidth().testTag("message_composer"),
     ) {
-        Column(Modifier.fillMaxWidth().imePadding().padding(horizontal = 14.dp, vertical = 10.dp)) {
-            if (!enabled) {
-                Text(
-                    stringResource(R.string.offline_send_unavailable),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 4.dp),
-                )
-            }
-            if (sendState is MessageSendState.Failed) {
-                Text(
-                    sendState.message,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(bottom = 4.dp),
-                )
-            }
-            Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(
-                    body,
-                    onBodyChanged,
-                    Modifier.weight(1f),
-                    enabled = enabled && sendState !is MessageSendState.Sending,
-                    placeholder = { Text(stringResource(R.string.message_hint)) },
-                    maxLines = 5,
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
-                    shape = RoundedCornerShape(26.dp),
-                )
-                FilledIconButton(
-                    onClick = onSend,
-                    enabled = enabled && body.isNotBlank() && sendState !is MessageSendState.Sending,
-                    modifier = Modifier.size(52.dp),
-                    colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                    ),
-                ) {
-                    if (sendState is MessageSendState.Sending) {
-                        CircularProgressIndicator(Modifier.size(22.dp), strokeWidth = 2.dp)
-                    } else {
-                        Icon(Icons.AutoMirrored.Outlined.Send, stringResource(R.string.send_message))
+        Column(Modifier.fillMaxWidth().navigationBarsPadding()) {
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.72f))
+            Column(Modifier.fillMaxWidth().padding(start = 12.dp, top = 9.dp, end = 12.dp, bottom = 10.dp)) {
+                if (!enabled) {
+                    Text(
+                        stringResource(R.string.offline_send_unavailable),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(start = 4.dp, end = 4.dp, bottom = 6.dp),
+                    )
+                }
+                if (sendState is MessageSendState.Failed) {
+                    Text(
+                        sendState.message,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(start = 4.dp, end = 4.dp, bottom = 6.dp),
+                    )
+                }
+                Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(9.dp)) {
+                    OutlinedTextField(
+                        body,
+                        onBodyChanged,
+                        Modifier
+                            .weight(1f)
+                            .heightIn(min = 52.dp, max = 136.dp)
+                            .testTag("message_input"),
+                        enabled = enabled && sendState !is MessageSendState.Sending,
+                        placeholder = {
+                            Text(
+                                stringResource(R.string.message_hint),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        },
+                        minLines = 1,
+                        maxLines = 5,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
+                        keyboardActions = KeyboardActions(),
+                        shape = RoundedCornerShape(24.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.72f),
+                            focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.82f),
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                            disabledBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.7f),
+                        ),
+                    )
+                    FilledIconButton(
+                        onClick = onSend,
+                        enabled = enabled && body.isNotBlank() && sendState !is MessageSendState.Sending,
+                        modifier = Modifier.size(50.dp).testTag("message_send"),
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.48f),
+                        ),
+                    ) {
+                        if (sendState is MessageSendState.Sending) {
+                            CircularProgressIndicator(
+                                Modifier.size(21.dp),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                strokeWidth = 2.dp,
+                            )
+                        } else {
+                            Icon(Icons.AutoMirrored.Outlined.Send, stringResource(R.string.send_message))
+                        }
                     }
                 }
             }
