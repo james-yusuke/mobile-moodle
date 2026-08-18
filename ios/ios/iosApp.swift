@@ -22,8 +22,11 @@ struct MobileMoodleApp: App {
                     : .authenticated
                 try UITestSeeder.seed(store: environment.store, authenticationState: authenticationState)
             }
-            let appModel = AppModel(environment: environment)
-            if uiTesting { appModel.isOnline = false }
+            let appModel = AppModel(
+                environment: environment,
+                initialOnlineState: !uiTesting,
+                observesConnectivity: !uiTesting
+            )
             _model = State(initialValue: appModel)
         } catch {
             fatalError("Unable to initialize the local data store: \(error.localizedDescription)")

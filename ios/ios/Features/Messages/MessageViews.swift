@@ -63,7 +63,12 @@ struct ConversationView: View {
                 Divider()
                 composer
             }
-        }.navigationTitle(conversation?.name ?? String(localized: "conversation")).navigationBarTitleDisplayMode(.inline)
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("conversation.screen.\(conversationID)")
+        .navigationTitle(conversation?.name ?? String(localized: "conversation"))
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.visible, for: .navigationBar)
         .task {
             text = model.draft(key: conversationDraftKey(conversationID))
             await model.refreshMessages(conversationID: conversationID, markRead: true)

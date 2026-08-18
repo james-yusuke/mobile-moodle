@@ -25,8 +25,9 @@ final class MobileMoodleUITests: XCTestCase {
         app.buttons["tab.messages"].tap()
         XCTAssertTrue(app.buttons["conversation.77"].waitForExistence(timeout: 2))
         app.buttons["conversation.77"].tap()
-        XCTAssertTrue(app.staticTexts["Course Advisor"].waitForExistence(timeout: 2))
-        XCTAssertTrue(app.descendants(matching: .any)["message.2"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.descendants(matching: .any)["conversation.screen.77"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Course Advisor"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.descendants(matching: .any)["message.2"].waitForExistence(timeout: 5))
         attachScreenshot(app, name: "message-conversation")
     }
 

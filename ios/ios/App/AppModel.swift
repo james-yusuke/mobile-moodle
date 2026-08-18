@@ -49,10 +49,17 @@ final class AppModel {
     @ObservationIgnored private let sso = SSOAuthSession()
     @ObservationIgnored private var started = false
 
-    init(environment: AppEnvironment) {
+    init(
+        environment: AppEnvironment,
+        initialOnlineState: Bool = true,
+        observesConnectivity: Bool = true
+    ) {
         self.environment = environment
+        isOnline = initialOnlineState
         messagePreviewEnabled = UserDefaults.standard.bool(forKey: "showMessagePreview")
-        connectivity.onChange = { [weak self] online in Task { @MainActor in self?.isOnline = online } }
+        if observesConnectivity {
+            connectivity.onChange = { [weak self] online in Task { @MainActor in self?.isOnline = online } }
+        }
     }
 
     func start() async {
@@ -163,15 +170,23 @@ final class AppModel {
 
     func refreshConversations() async {
         guard let account = activeAccount else { return }
+        guard isOnline else {
+            snapshot = (try? environment.repository.snapshot(accountID: account.id)) ?? snapshot
+            return
+        }
         do { _ = try await environment.repository.refreshConversations(accountID: account.id, offset: 0); snapshot = try environment.repository.snapshot(accountID: account.id) }
         catch { show(error) }
     }
 
     func refreshMessages(conversationID: Int64, offset: Int = 0, markRead: Bool = false) async {
         guard let account = activeAccount else { return }
+        guard isOnline else {
+            snapshot = (try? environment.repository.snapshot(accountID: account.id)) ?? snapshot
+            return
+        }
         do {
             _ = try await environment.repository.refreshMessages(accountID: account.id, conversationID: conversationID, offset: offset)
-            if markRead && isOnline { try await environment.repository.markConversationRead(accountID: account.id, conversationID: conversationID) }
+            if markRead { try await environment.repository.markConversationRead(accountID: account.id, conversationID: conversationID) }
             snapshot = try environment.repository.snapshot(accountID: account.id)
         } catch { show(error) }
     }
