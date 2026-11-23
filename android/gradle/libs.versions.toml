@@ -1,5 +1,5 @@
 [versions]
-agp = "9.5.1"
+agp = "9.5.2"
 kotlin = "2.4.21"
 coreKtx = "1.19.1"
 activity = "1.13.0"
@@ -19,12 +19,12 @@ coroutines = "1.11.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
-robolectric = "4.17"
+robolectric = "4.18.1"
 testCore = "1.7.0"
 serialization = "1.13.0"
 
 [libraries]
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version = "2026.09.00" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version = "2026.11.01" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
